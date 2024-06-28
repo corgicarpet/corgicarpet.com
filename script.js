@@ -1,4 +1,5 @@
 // Your web app's Firebase configuration
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 const firebaseConfig = {
     apiKey: "AIzaSyB6EYgNG0YAIQaHYuYRC7OkNkjM2YlibEk",
     authDomain: "corgicarpet-2b755.firebaseapp.com",
