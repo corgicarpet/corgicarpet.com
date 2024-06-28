@@ -7,6 +7,7 @@ import { initializeApp } from "firebase/app";
 const firebaseConfig = {
   apiKey: "AIzaSyB6EYgNG0YAIQaHYuYRC7OkNkjM2YlibEk",
   authDomain: "corgicarpet-2b755.firebaseapp.com",
+  databaseURL: "https://corgicarpet-2b755-default-rtdb.firebaseio.com/",
   projectId: "corgicarpet-2b755",
   storageBucket: "corgicarpet-2b755.appspot.com",
   messagingSenderId: "1039226205657",
@@ -15,7 +16,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
+const database = firebase.database();
 
 document.getElementById('messageForm').addEventListener('submit', function(event) {
     event.preventDefault();
