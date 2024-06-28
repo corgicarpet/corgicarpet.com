@@ -49,7 +49,19 @@ function saveMessage(message) {
 function loadMessages() {
     // Here, you'll implement loading messages from the third-party backend
     // For example, using Firebase Realtime Database or Firestore
-    console.log('Messages loaded');
+    const messagesRef = database.ref('messages');
+    messagesRef.on('value', (snapshot) => {
+        const messages = snapshot.val();
+        const messagesDiv = document.getElementById('messages');
+        messagesDiv.innerHTML = '';
+
+        for (let id in messages) {
+            const message = messages[id];
+            const messageDiv = document.createElement('div');
+            messageDiv.innerHTML = `<strong>${message.username}</strong>: ${message.message} <em>${new Date(message.timestamp).toLocaleString()}</em>`;
+            messagesDiv.appendChild(messageDiv);
+        }
+    });
 }
 
 // Call loadMessages to fetch and display messages when the page loads
