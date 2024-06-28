@@ -1,23 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Message Board</title>
-</head>
-<body>
-    <h1>Message Board</h1>
-    <form id="messageForm">
-        <input type="text" id="username" placeholder="Your Name" required>
-        <textarea id="message" placeholder="Your Message" required></textarea>
-        <button type="submit">Post Message</button>
-    </form>
-    <div id="messages"></div>
+<HTML>
+<HEAD>
+<TITLE> website for the corgicarpet </TITLE>
+</HEAD>
+<P ALIGN=CENTER><B>CAT's Website</B></P>
+<HR SIZE=3 WIDTH=80%>
 
-    <!-- Add Firebase SDKs -->
+<BODY BGCOLOR="#3c325c"TEXT="#6bb071">
+<P ALIGN=CENTER>
+<FONT SIZE=7 COLOR="ORANGE" FACE="Comic Sans MS"> Welcome to <I>my<I> site!</FONT>
+</P>
+<BR>
+  
+<CENTER>
+<IMG SRC="http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcSoPravXdZRihoO83Kd7TwlZBik03ZXlDZvBYx5ZyotO_RWKE7d_G_nFxBTjPE1yTILP7qUl2Q_rtbLUsk" WIDTH=400 HEIGHT=200>
+<br>
+<B>@corgicarpet</B> 
+<BR>
+<B>Fastest Hand in the midwest</B> 
+<BR>
+<B></B> 
+<BR>
+
+  <br><br>
+  </CENTER>
 
 
-    <!-- Your custom script -->
-    <script src="script.js"></script>
-</body>
-</html>
+  
+<FONT SIZE=7 COLOR="ORANGE" FACE="Comic Sans MS">
+<P ALIGN=CENTER>
+  <IMG SRC="https://media.tenor.com/Ug1P7fkAYG8AAAAM/dancing-dog-excited.gif" WIDTH=1200 HEIGHT=600>
+<br>
+
+<a href="https://media.tenor.com/Ug1P7fkAYG8AAAAM/dancing-dog-excited.gif" target="_blank">what the dog doin</a>
+</P>
+</FONT>
+<BR>
+
+
+<P ALIGN=CENTER>Want to contact <B>me</B>?</P>
+<P ALIGN=CENTER>Add me on <I>discord</I> @corgicarpet</P>
+  <h2>Messages</h2>
+  
+ <input type="text" id="fname" placeholder="Send message" name="fname">
+  <input type="button" id="btn1" value="Enter">
+
+  <p class = "output" id="output1" ></p>
+
+  <script>
+    const txt1 = document.getElementById('fname');
+    const btn1 = document.getElementById('btn1');
+    const out1 = document.getElementById('output1');
+    function fun1(){
+      out1.innerHTML = txt1.value;
+    }
+
+    btn1.addEventListener('click',fun1);
+  </script>
+  
+    
+  <FONT SIZE=5 COLOR="ORANGE" FACE="Comic Sans MS">
+<P ALIGN=CENTER>
+<a href="https://corgicarp.carrd.co/" target="_blank">old</a>
+</P>
+</FONT>
+<BR>
+<HR SIZE=3>
+</BODY>
+</HTML>
