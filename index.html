@@ -38,8 +38,10 @@
 
   // Initialize Firebase
 
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    
   const app = initializeApp(firebaseConfig);
-
+const db = firebase.firestore(app);
   const analytics = getAnalytics(app);
 
 </script>
@@ -84,7 +86,48 @@
 <P ALIGN=CENTER>Want to contact <B>me</B>?</P>
 <P ALIGN=CENTER>Add me on <I>discord</I> @corgicarpet</P>
   <h2>Messages</h2>
+  <script>
+     function postMessage() {
+      const username = document.getElementById('username').value;
+      const message = document.getElementById('message').value;
+      db.collection('messages').add({
+        username: username,
+        message: message,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        document.getElementById('username').value = '';
+        document.getElementById('message').value = '';
+        loadMessages();
+      });
+    }
 
+    // Function to load messages
+    function loadMessages() {
+      db.collection('messages').orderBy('timestamp', 'desc').onSnapshot((snapshot) => {
+        const messagesDiv = document.getElementById('messages');
+        messagesDiv.innerHTML = '';
+        snapshot.forEach((doc) => {
+          const messageData = doc.data();
+          messagesDiv.innerHTML += `<p><strong>${messageData.username}:</strong> ${messageData.message}</p>`;
+        });
+      });
+    }
+
+    // Load messages when the page loads
+    window.onload = loadMessages;
+  </script>
+
+  <h1>Simple Forum</h1>
+  <div>
+    <input type="text" id="username" placeholder="Your name">
+    <textarea id="message" placeholder="Your message"></textarea>
+    <button onclick="postMessage()">Post Message</button>
+  </div>
+  <h2>Messages</h2>
+  <div id="messages"></div>
+  
+  <BR>
+  <BR>
   <!
  <input type="text" id="fname" placeholder="Send message" name="fname">
   <input type="button" id="btn1" value="Enter">
