@@ -37,33 +37,33 @@ body, html {
     flex-direction: column;
     padding: 10px;
     justify-content: flex-end;
-    padding-bottom: 10px;
     box-sizing: border-box;
     transition: width 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
 }
 
+/* Collapse state for chat */
 #chat-box.collapsed {
-    width: 50px; /* Shrink width when collapsed */
-    opacity: 0.7; /* Add slight transparency */
-    padding: 10px 0; /* Reduce padding when collapsed */
+    width: 50px; /* Narrow width for collapsed state */
+    padding: 10px 0; /* Less padding when collapsed */
+    opacity: 0.7; /* Slight transparency when collapsed */
 }
 
-#chat-box.collapsed input,
-#chat-box.collapsed button,
-#chat-box.collapsed h2,
-#chat-box.collapsed #chat-messages {
-    display: none; /* Hide all inputs, button, header, and messages when collapsed */
+/* Hide chat content when collapsed */
+#chat-box.collapsed #chat-messages,
+#chat-box.collapsed #username-input,
+#chat-box.collapsed #chat-input,
+#chat-box.collapsed #send-button {
+    display: none; /* Hide all input, messages, and button when collapsed */
 }
 
-
-#chat-box.collapsed h2 {
-    display: none; /* Hide the header when collapsed */
-}
-/* Adjust the collapse button to be always visible */
+/* Always visible button to toggle collapse/expand */
 #toggle-chat-button {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 50px;
     height: 30px;
-    margin-top: 10px;
     background-color: #f39c12;
     color: white;
     border: none;
@@ -71,11 +71,13 @@ body, html {
     cursor: pointer;
     text-align: center;
     display: inline-block;
+    z-index: 10; /* Ensure the button is above the chat box */
 }
 
 #toggle-chat-button:hover {
     background-color: #e67e22; /* Hover effect for the button */
 }
+
 /* Username input */
 #username-input {
     width: 100%;
