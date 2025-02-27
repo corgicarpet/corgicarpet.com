@@ -13,7 +13,7 @@ body, html {
     display: flex;
     min-height: 100vh;
     flex-direction: row;
-    margin-right: 200px; /* Space for chat box */
+    margin-right: 300px; /* Space for chat box */
 }
 
 /* Central content area */
