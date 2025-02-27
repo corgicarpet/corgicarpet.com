@@ -2,7 +2,7 @@
 const firebaseConfig = {
     apiKey: "AIzaSyDIoYx1wJe0V5Rl_YlvLnye09RpnkuDhvo",
     authDomain: "corgicarpet-com.firebaseapp.com",
-    databaseURL: "https://corgicarpet-com-default-rtdb.firebaseio.com", // <-- Make sure this is correct
+    databaseURL: "https://corgicarpet-com-default-rtdb.firebaseio.com/", // <-- Make sure this is correct
     projectId: "corgicarpet-com",
     storageBucket: "corgicarpet-com.appspot.com", // <-- Corrected this
     messagingSenderId: "766693233014",
