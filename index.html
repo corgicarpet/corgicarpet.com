@@ -5,8 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professional Tech Page</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js"></script>
+    <script type="module">
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+    import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
+
+    // Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDIoYx1wJe0V5Rl_YlvLnye09RpnkuDhvo",
+        authDomain: "corgicarpet-com.firebaseapp.com",
+        databaseURL: "https://corgicarpet-com-default-rtdb.firebaseio.com",
+        projectId: "corgicarpet-com",
+        storageBucket: "corgicarpet-com.appspot.com",
+        messagingSenderId: "766693233014",
+        appId: "1:766693233014:web:7d4ffd414e8f935a15ea57",
+        measurementId: "G-GD5WHC7P76"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const messagesRef = ref(db, "messages");
+
+    // Send message function
+    function sendMessage() {
+        let input = document.getElementById("chat-input");
+        let message = input.value.trim();
+
+        if (message !== "") {
+            push(messagesRef, {
+                text: message,
+                timestamp: Date.now()
+            });
+            input.value = ""; // Clear input
+        }
+    }
+
+    // Listen for new messages
+    onChildAdded(messagesRef, (snapshot) => {
+        let message = snapshot.val();
+        let messageDiv = document.createElement("div");
+        messageDiv.textContent = message.text;
+        document.getElementById("chat-messages").appendChild(messageDiv);
+    });
+
+    // Attach event listener to button
+    document.getElementById("send-button").addEventListener("click", sendMessage);
+</script>
+
 </head>
 <body>
     <header>
