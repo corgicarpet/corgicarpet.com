@@ -39,23 +39,43 @@ body, html {
     justify-content: flex-end;
     padding-bottom: 10px;
     box-sizing: border-box;
-    transition: width 0.3s ease, opacity 0.3s ease;
+    transition: width 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
 }
 
 #chat-box.collapsed {
     width: 50px; /* Shrink width when collapsed */
     opacity: 0.7; /* Add slight transparency */
+    padding: 10px 0; /* Reduce padding when collapsed */
 }
 
 #chat-box.collapsed input,
-#chat-box.collapsed button {
-    display: none; /* Hide inputs and button when collapsed */
+#chat-box.collapsed button,
+#chat-box.collapsed h2,
+#chat-box.collapsed #chat-messages {
+    display: none; /* Hide all inputs, button, header, and messages when collapsed */
 }
+
 
 #chat-box.collapsed h2 {
     display: none; /* Hide the header when collapsed */
 }
+/* Adjust the collapse button to be always visible */
+#toggle-chat-button {
+    width: 50px;
+    height: 30px;
+    margin-top: 10px;
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+}
 
+#toggle-chat-button:hover {
+    background-color: #e67e22; /* Hover effect for the button */
+}
 /* Username input */
 #username-input {
     width: 100%;
