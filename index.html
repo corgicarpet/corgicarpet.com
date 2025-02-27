@@ -63,21 +63,23 @@
 
         // Toggle chat visibility
        // Toggle chat visibility
-        function toggleChat() {
-            const chatBox = document.getElementById("chat-box");
-            const toggleButton = document.getElementById("toggle-chat-button");
-        
-            chatBox.classList.toggle("collapsed");
-        
-            if (chatBox.classList.contains("collapsed")) {
-                toggleButton.innerText = "Expand Chat"; // Update button text
-            } else {
-                toggleButton.innerText = "Collapse Chat"; // Update button text
-            }
-        }
-        
-        // Add event listener to the button to toggle chat collapse
-        document.getElementById("toggle-chat-button").addEventListener("click", toggleChat);
+       // Toggle chat visibility
+function toggleChat() {
+    const chatBox = document.getElementById("chat-box");
+    const toggleButton = document.getElementById("toggle-chat-button");
+
+    chatBox.classList.toggle("collapsed");
+
+    if (chatBox.classList.contains("collapsed")) {
+        toggleButton.innerText = "Expand Chat"; // Update button text
+    } else {
+        toggleButton.innerText = "Collapse Chat"; // Update button text
+    }
+}
+
+// Add event listener to the button to toggle chat collapse
+document.getElementById("toggle-chat-button").addEventListener("click", toggleChat);
+
 
     </script>
 </head>
