@@ -23,18 +23,12 @@ body, html {
     overflow: auto;
 }
 
-/* Header */
-header h1 {
-    font-size: 2rem;
-    color: #f39c12; /* Light orange color */
-}
-
 /* Right side chat box */
 #chat-box {
     position: fixed;
     right: 0;
     top: 0;
-    width: 200px;
+    width: 300px;
     height: 100%;
     background-color: #2e1a47; /* Dark purple for the chat box */
     border-left: 2px solid #f39c12; /* Light orange border */
@@ -45,17 +39,21 @@ header h1 {
     justify-content: flex-end;
     padding-bottom: 10px;
     box-sizing: border-box;
-    transition: width 0.3s ease; /* Smooth transition for collapse */
+    transition: width 0.3s ease, opacity 0.3s ease;
 }
 
 #chat-box.collapsed {
     width: 50px; /* Shrink width when collapsed */
-    overflow: hidden;
+    opacity: 0.7; /* Add slight transparency */
 }
 
 #chat-box.collapsed input,
 #chat-box.collapsed button {
     display: none; /* Hide inputs and button when collapsed */
+}
+
+#chat-box.collapsed h2 {
+    display: none; /* Hide the header when collapsed */
 }
 
 /* Username input */
