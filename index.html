@@ -6,7 +6,6 @@
     <title>Professional Tech Page</title>
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Add your custom styles for the layout here -->
     <style>
         /* Reset basic styles */
         body, html {
@@ -18,8 +17,9 @@
         /* Main layout using flexbox */
         .main-container {
             display: flex;
-            min-height: 100vh; /* Full screen height */
+            min-height: 100vh;
             flex-direction: row;
+            margin-right: 300px; /* Add space for the chat box on the right */
         }
 
         /* Central content area */
@@ -52,17 +52,8 @@
             padding: 5px;
             max-height: 90%;
             overflow-y: auto;
-        }
-
-        /* Style individual message elements */
-       #chat-messages {
-            flex: 1;
-            margin-bottom: 10px;
-            padding: 5px;
-            max-height: 90%;
-            overflow-y: auto; /* Allows the container to scroll vertically */
             display: flex;
-            /*flex-direction: column-reverse; /* Makes new messages appear at the bottom */
+            flex-direction: column-reverse; /* Make new messages appear at the bottom */
         }
 
         /* Input field and button styles */
@@ -90,19 +81,19 @@
             margin-bottom: 20px;
         }
 
-          /* Gallery image container */
+        /* Gallery image container */
         .image-container {
-            display: flex; /* Use Flexbox for layout */
-            justify-content: space-between; /* Space the images evenly */
-            gap: 10px; /* Add space between the images */
-            flex-wrap: wrap; /* Allow wrapping if the container is too narrow */
+            display: flex;
+            justify-content: space-between;
+            gap: 2px;
+            flex-wrap: wrap;
         }
 
         .image-container img {
-            width: 100%; /* Scale the images to fit their container */
-            max-width: 30%; /* Limit the width to ensure they don't get too large */
-            height: auto; /* Maintain aspect ratio */
-            object-fit: cover; /* Ensures images fill the area without distortion */
+            width: 100%;
+            max-width: 30%;
+            height: auto;
+            object-fit: cover;
         }
     </style>
 
@@ -148,12 +139,11 @@
             let messageDiv = document.createElement("div");
             messageDiv.textContent = message.text;
             document.getElementById("chat-messages").appendChild(messageDiv);
-        
+            
             // Scroll to the bottom to focus the latest message
             const chatMessagesContainer = document.getElementById("chat-messages");
             chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
         });
-
 
         // Attach event listener to button
         document.getElementById("send-button").addEventListener("click", sendMessage);
