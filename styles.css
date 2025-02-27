@@ -13,7 +13,7 @@ body, html {
     display: flex;
     min-height: 100vh;  /* Ensure the container takes up the full height */
     flex-direction: row;
-    margin-right: 300px; /* Add space for the chat box on the right */
+    margin-right: 200px; /* Add space for the chat box on the right */
     background-color: #2e1a47; /* Ensure the background color of the main container is the same */
 }
 
@@ -38,7 +38,7 @@ header h1 {
     position: fixed;
     right: 0;
     top: 0;
-    width: 300px;
+    width: 200px;
     height: 100%;
     background-color: #2e1a47; /* Dark purple for the chat box */
     border-left: 2px solid #f39c12; /* Light orange border */
@@ -49,6 +49,18 @@ header h1 {
     justify-content: flex-end;
     padding-bottom: 10px; /* Increased padding to avoid clipping the button */
     box-sizing: border-box; /* Ensures padding is included in the overall height calculation */
+    transition: width 0.3s ease; /* Smooth transition when collapsed */
+}
+
+/* Collapsed state for chat box */
+#chat-box.collapsed {
+    width: 50px; /* Shrink width when collapsed */
+    overflow: hidden; /* Hide chat content */
+}
+
+#chat-box.collapsed input,
+#chat-box.collapsed button {
+    display: none; /* Hide inputs and button when collapsed */
 }
 
 /* Username input */
@@ -127,18 +139,4 @@ header h1 {
 
 #send-button:hover {
     background-color: #e67e22; /* Slightly darker orange on hover */
-}
-
-/* Gallery styles */
-.photo-gallery {
-    display: flex;
-    flex-wrap: wrap; /* Allow images to wrap onto new rows if needed */
-    gap: 10px; /* Space between the images */
-}
-
-.photo-gallery img {
-    width: 200px; /* Fixed size for each image */
-    height: 200px; /* Fixed size for each image */
-    object-fit: cover; /* Ensure aspect ratio is maintained */
-    border-radius: 5px;
 }
