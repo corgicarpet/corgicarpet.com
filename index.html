@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="styles.css">
 
     <script type="module">
+        // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
         import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
 
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDIoYx1wJe0V5Rl_YlvLnye09RpnkuDhvo",
             authDomain: "corgicarpet-com.firebaseapp.com",
@@ -21,10 +23,12 @@
             measurementId: "G-GD5WHC7P76"
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const messagesRef = ref(db, "messages");
 
+        // Send message function
         function sendMessage() {
             let input = document.getElementById("chat-input");
             let message = input.value.trim();
@@ -40,52 +44,56 @@
             }
         }
 
+        // Listen for the Enter key to send a message
         document.getElementById("chat-input").addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                sendMessage();
+            if (event.key === "Enter") { // Check if Enter key is pressed
+                event.preventDefault(); // Prevent the default "Enter" behavior (which adds a new line)
+                sendMessage(); // Send the message
             }
         });
 
+        // Listen for new messages from Firebase
         onChildAdded(messagesRef, (snapshot) => {
             let message = snapshot.val();
             let messageDiv = document.createElement("div");
             messageDiv.classList.add("message");
+
+            // Format the message with username and timestamp
+            let username = message.username || "Anonymous";  // Default to "Anonymous" if undefined
             let formattedMessage = `${message.username}: ${message.text} <span class="timestamp">${new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>`;
             messageDiv.innerHTML = formattedMessage;
             document.getElementById("chat-messages").appendChild(messageDiv);
 
+            // Scroll to the bottom to focus the latest message
             const chatMessagesContainer = document.getElementById("chat-messages");
             chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
         });
 
+        // Attach event listener to button
         document.getElementById("send-button").addEventListener("click", sendMessage);
 
         // Toggle chat visibility
-       // Toggle chat visibility
-       // Toggle chat visibility
-function toggleChat() {
-    const chatBox = document.getElementById("chat-box");
-    const toggleButton = document.getElementById("toggle-chat-button");
+        function toggleChat() {
+            const chatBox = document.getElementById("chat-box");
+            const toggleButton = document.getElementById("toggle-chat-button");
 
-    chatBox.classList.toggle("collapsed");
+            chatBox.classList.toggle("collapsed");
 
-    if (chatBox.classList.contains("collapsed")) {
-        toggleButton.innerText = "Expand Chat"; // Update button text
-    } else {
-        toggleButton.innerText = "Collapse Chat"; // Update button text
-    }
-}
+            if (chatBox.classList.contains("collapsed")) {
+                toggleButton.innerText = "Expand Chat"; // Update button text
+            } else {
+                toggleButton.innerText = "Collapse Chat"; // Update button text
+            }
+        }
 
-// Add event listener to the button to toggle chat collapse
-document.getElementById("toggle-chat-button").addEventListener("click", toggleChat);
-
-
+        // Add event listener to the button to toggle chat collapse
+        document.getElementById("toggle-chat-button").addEventListener("click", toggleChat);
     </script>
 </head>
 <body>
 
     <div class="main-container">
+        <!-- Central content area -->
         <div class="content">
             <header>
                 <h1>corgicarpet's webpage</h1>
@@ -108,7 +116,7 @@ document.getElementById("toggle-chat-button").addEventListener("click", toggleCh
 
             <section id="gallery">
                 <h2>Gallery</h2>
-                <div class="photo-gallery">
+                <div class="image-container">
                     <img src="https://i.pinimg.com/736x/f0/b8/c7/f0b8c7ed7d4edaaf5f13658961a5808a.jpg" alt="Image 1">
                     <img src="https://i.ytimg.com/vi/WiNFLXYmbew/maxresdefault.jpg" alt="Image 2">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKpklZWGQSCho5S-hLB16ihk5VTtmOEp6IaQ&s" alt="Image 3">
@@ -116,15 +124,17 @@ document.getElementById("toggle-chat-button").addEventListener("click", toggleCh
             </section>
         </div>
 
+        <!-- Right-side chat box -->
         <section id="chat-box">
+            <button id="toggle-chat-button">Collapse Chat</button>
             <h2>Live Chat</h2>
+
             <div id="chat-messages"></div>
+            <!-- Username input field -->
             <input type="text" id="username-input" placeholder="Enter your username">
             <input type="text" id="chat-input" placeholder="Type your message...">
             <button id="send-button">Send</button>
-            <button id="toggle-chat-button">Collapse Chat</button> <!-- Collapse button -->
         </section>
-
     </div>
 
 </body>
