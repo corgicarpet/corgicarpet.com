@@ -123,7 +123,7 @@
         function sendMessage() {
             let input = document.getElementById("chat-input");
             let message = input.value.trim();
-
+        
             if (message !== "") {
                 push(messagesRef, {
                     text: message,
@@ -132,14 +132,22 @@
                 input.value = ""; // Clear input
             }
         }
-
-        // Listen for new messages
+        
+        // Listen for the Enter key to send a message
+        document.getElementById("chat-input").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") { // Check if Enter key is pressed
+                event.preventDefault(); // Prevent the default "Enter" behavior (which adds a new line)
+                sendMessage(); // Send the message
+            }
+        });
+        
+        // Listen for new messages from Firebase
         onChildAdded(messagesRef, (snapshot) => {
             let message = snapshot.val();
             let messageDiv = document.createElement("div");
             messageDiv.textContent = message.text;
             document.getElementById("chat-messages").appendChild(messageDiv);
-
+        
             // Scroll to the bottom to focus the latest message
             const chatMessagesContainer = document.getElementById("chat-messages");
             chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
