@@ -32,16 +32,18 @@
         function sendMessage() {
             let input = document.getElementById("chat-input");
             let message = input.value.trim();
-        
-            if (message !== "") {
+            let username = document.getElementById("username-input").value.trim();
+
+            if (message !== "" && username !== "") {
                 push(messagesRef, {
                     text: message,
+                    username: username,
                     timestamp: Date.now()
                 });
                 input.value = ""; // Clear input
             }
         }
-        
+
         // Listen for the Enter key to send a message
         document.getElementById("chat-input").addEventListener("keydown", function(event) {
             if (event.key === "Enter") { // Check if Enter key is pressed
@@ -49,14 +51,18 @@
                 sendMessage(); // Send the message
             }
         });
-        
+
         // Listen for new messages from Firebase
         onChildAdded(messagesRef, (snapshot) => {
             let message = snapshot.val();
             let messageDiv = document.createElement("div");
-            messageDiv.textContent = message.text;
+            messageDiv.classList.add("message");
+
+            // Format the message with username and timestamp
+            let formattedMessage = `${message.username}: ${message.text} <span class="timestamp">${new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>`;
+            messageDiv.innerHTML = formattedMessage;
             document.getElementById("chat-messages").appendChild(messageDiv);
-        
+
             // Scroll to the bottom to focus the latest message
             const chatMessagesContainer = document.getElementById("chat-messages");
             chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
@@ -103,6 +109,10 @@
         <!-- Right-side chat box -->
         <section id="chat-box">
             <h2>Live Chat</h2>
+
+            <!-- Username input field -->
+            <input type="text" id="username-input" placeholder="Enter your username">
+
             <div id="chat-messages"></div>
             <input type="text" id="chat-input" placeholder="Type your message...">
             <button id="send-button">Send</button>
