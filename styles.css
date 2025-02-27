@@ -38,7 +38,7 @@ header h1 {
     position: fixed;
     right: 0;
     top: 0;
-    width: 300px;
+    width: 200px;
     height: 100%;
     background-color: #2e1a47; /* Dark purple for the chat box */
     border-left: 2px solid #f39c12; /* Light orange border */
@@ -135,7 +135,7 @@ a:hover {
 /* Gallery section styles */
 #gallery {
     background-color: #3a1e6f;
-    padding: 20px;
+    padding: 0px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
