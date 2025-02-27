@@ -71,6 +71,18 @@
 
         // Attach event listener to button
         document.getElementById("send-button").addEventListener("click", sendMessage);
+
+        // Function to toggle chat visibility
+        function toggleChat() {
+            const chatBox = document.getElementById("chat-box");
+            chatBox.classList.toggle("collapsed");
+            const toggleButton = document.getElementById("toggle-chat-button");
+            if (chatBox.classList.contains("collapsed")) {
+                toggleButton.innerText = "Expand Chat"; // Change button text to "Expand Chat" when collapsed
+            } else {
+                toggleButton.innerText = "Collapse Chat"; // Change button text to "Collapse Chat" when expanded
+            }
+        }
     </script>
 </head>
 <body>
@@ -99,7 +111,6 @@
 
             <section id="gallery">
                 <h2>Gallery</h2>
-                <!-- Wrap the images in a div with class "photo-gallery" -->
                 <div class="photo-gallery">
                     <img src="https://i.pinimg.com/736x/f0/b8/c7/f0b8c7ed7d4edaaf5f13658961a5808a.jpg" alt="Image 1">
                     <img src="https://i.ytimg.com/vi/WiNFLXYmbew/maxresdefault.jpg" alt="Image 2">
@@ -117,6 +128,9 @@
             <input type="text" id="username-input" placeholder="Enter your username">
             <input type="text" id="chat-input" placeholder="Type your message...">
             <button id="send-button">Send</button>
+
+            <!-- Button to collapse/expand the chat section -->
+            <button id="toggle-chat-button" onclick="toggleChat()">Collapse Chat</button>
         </section>
     </div>
 
