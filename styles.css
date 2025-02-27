@@ -47,7 +47,7 @@ header h1 {
     flex-direction: column;
     padding: 10px;
     justify-content: flex-end;
-    padding-bottom: 60px; /* Increased padding to avoid clipping the button */
+    padding-bottom: 30px; /* Increased padding to avoid clipping the button */
     box-sizing: border-box; /* Ensures padding is included in the overall height calculation */
 }
 
