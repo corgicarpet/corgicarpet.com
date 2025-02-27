@@ -11,9 +11,10 @@ body, html {
 /* Main layout using flexbox */
 .main-container {
     display: flex;
-    min-height: 100vh;
+    min-height: 100vh;  /* Ensure the container takes up the full height */
     flex-direction: row;
     margin-right: 300px; /* Add space for the chat box on the right */
+    background-color: #2e1a47; /* Ensure the background color of the main container is the same */
 }
 
 /* Central content area */
@@ -21,7 +22,7 @@ body, html {
     flex: 1;
     padding: 20px;
     overflow: auto;
-    background-color: #3a1e6f; /* Slightly lighter purple for contrast */
+    background-color: transparent; /* Remove the background color here to show body background */
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
