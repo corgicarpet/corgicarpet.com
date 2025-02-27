@@ -94,7 +94,7 @@ header h1 {
 
 /* Timestamp style */
 .timestamp {
-    font-size: 0.3rem;
+    font-size: 0.05rem;
     color: rgba(170, 170, 170, 0.7); /* More gray and transparent */
     margin-left: 10px;
     text-align: right;
