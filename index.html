@@ -5,66 +5,111 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professional Tech Page</title>
     <link rel="stylesheet" href="styles.css">
-    <script type="module">
-    // Import Firebase modules
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
-    import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
 
-    // Firebase Configuration
-     const firebaseConfig = {
-
-    apiKey: "AIzaSyDIoYx1wJe0V5Rl_YlvLnye09RpnkuDhvo",
-
-    authDomain: "corgicarpet-com.firebaseapp.com",
-
-    databaseURL: "https://corgicarpet-com-default-rtdb.firebaseio.com",
-
-    projectId: "corgicarpet-com",
-
-    storageBucket: "corgicarpet-com.firebasestorage.app",
-
-    messagingSenderId: "766693233014",
-
-    appId: "1:766693233014:web:7d4ffd414e8f935a15ea57",
-
-    measurementId: "G-GD5WHC7P76"
-
-  };
-
-
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-
-    const db = getDatabase(app);
-    const messagesRef = ref(db, "messages");
-
-    // Send message function
-    function sendMessage() {
-        let input = document.getElementById("chat-input");
-        let message = input.value.trim();
-
-        if (message !== "") {
-            push(messagesRef, {
-                text: message,
-                timestamp: Date.now()
-            });
-            input.value = ""; // Clear input
+    <!-- Add your custom styles for the chat box here -->
+    <style>
+        /* Styles for the chat box */
+        #chat-box {
+            position: fixed;
+            right: 0;
+            bottom: 20px; /* You can adjust the bottom margin */
+            width: 300px; /* You can adjust the width */
+            max-height: 400px; /* Adjust this to control how tall the chat box is */
+            background-color: #f1f1f1; /* Background color */
+            border: 2px solid #ccc; /* Border */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect */
+            padding: 10px;
+            overflow-y: scroll; /* Make the messages scrollable */
+            z-index: 1000; /* Ensure it's on top of other elements */
         }
-    }
 
-    // Listen for new messages
-    onChildAdded(messagesRef, (snapshot) => {
-        let message = snapshot.val();
-        let messageDiv = document.createElement("div");
-        messageDiv.textContent = message.text;
-        document.getElementById("chat-messages").appendChild(messageDiv);
-    });
+        /* Style the messages container inside the chat box */
+        #chat-messages {
+            margin-bottom: 10px;
+            padding: 5px;
+            max-height: 300px; /* Limit the height of the messages area */
+            overflow-y: auto; /* Make the messages area scrollable */
+        }
 
-    // Attach event listener to button
-    document.getElementById("send-button").addEventListener("click", sendMessage);
-</script>
+        /* Style individual message elements */
+        #chat-messages div {
+            margin-bottom: 10px;
+            padding: 5px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+        }
 
+        /* Input field and button styles */
+        #chat-input {
+            width: calc(100% - 60px); /* Full width minus space for the button */
+            padding: 8px;
+            margin-right: 10px; /* Space between input and button */
+            border-radius: 5px;
+        }
+
+        #send-button {
+            padding: 10px;
+            background-color: #007bff; /* Button color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #send-button:hover {
+            background-color: #0056b3; /* Button hover color */
+        }
+    </style>
+
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+        import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIoYx1wJe0V5Rl_YlvLnye09RpnkuDhvo",
+            authDomain: "corgicarpet-com.firebaseapp.com",
+            databaseURL: "https://corgicarpet-com-default-rtdb.firebaseio.com",
+            projectId: "corgicarpet-com",
+            storageBucket: "corgicarpet-com.appspot.com",
+            messagingSenderId: "766693233014",
+            appId: "1:766693233014:web:7d4ffd414e8f935a15ea57",
+            measurementId: "G-GD5WHC7P76"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const messagesRef = ref(db, "messages");
+
+        // Send message function
+        function sendMessage() {
+            let input = document.getElementById("chat-input");
+            let message = input.value.trim();
+
+            if (message !== "") {
+                push(messagesRef, {
+                    text: message,
+                    timestamp: Date.now()
+                });
+                input.value = ""; // Clear input
+            }
+        }
+
+        // Listen for new messages
+        onChildAdded(messagesRef, (snapshot) => {
+            let message = snapshot.val();
+            let messageDiv = document.createElement("div");
+            messageDiv.textContent = message.text;
+            document.getElementById("chat-messages").appendChild(messageDiv);
+        });
+
+        // Attach event listener to button
+        document.getElementById("send-button").addEventListener("click", sendMessage);
+    </script>
 </head>
 <body>
     <header>
