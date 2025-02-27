@@ -47,6 +47,7 @@ header h1 {
     flex-direction: column;
     padding: 10px;
     justify-content: flex-end;
+    padding-bottom: 20px; /* Add padding to the bottom to avoid the button being cut off */
 }
 
 /* Username input */
@@ -109,6 +110,7 @@ header h1 {
     border: 1px solid #f39c12;
     background-color: #3a1e6f;
     color: #f8f8f8;
+    margin-bottom: 10px; /* Add margin below the input field */
 }
 
 #send-button {
@@ -118,6 +120,7 @@ header h1 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-bottom: 10px; /* Add margin to the bottom of the button */
 }
 
 #send-button:hover {
