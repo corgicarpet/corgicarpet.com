@@ -59,6 +59,7 @@
             messageDiv.classList.add("message");
 
             // Format the message with username and timestamp
+            let username = message.username || "Anonymous";  // Default to "Anonymous" if undefined
             let formattedMessage = `${message.username}: ${message.text} <span class="timestamp">${new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>`;
             messageDiv.innerHTML = formattedMessage;
             document.getElementById("chat-messages").appendChild(messageDiv);
