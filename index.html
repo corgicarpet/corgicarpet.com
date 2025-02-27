@@ -1,140 +1,1 @@
-<HTML>
-<HEAD>
- 
-<TITLE> website for the corgicarpet </TITLE>
-   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
-   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?">
-</HEAD>
-<P ALIGN=CENTER><B>CAT's Website</B></P>
-<HR SIZE=3 WIDTH=80%>
-
-<BODY BGCOLOR="#3c325c"TEXT="#6bb071">
-<P ALIGN=CENTER>
-<FONT SIZE=7 COLOR="ORANGE" FACE="Comic Sans MS"> Welcome to <I>my<I> site!</FONT>
-</P>
-<BR>
-  
-<CENTER>
-<IMG SRC="http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcSoPravXdZRihoO83Kd7TwlZBik03ZXlDZvBYx5ZyotO_RWKE7d_G_nFxBTjPE1yTILP7qUl2Q_rtbLUsk" WIDTH=400 HEIGHT=200>
-<br>
-<B>@corgicarpet</B> 
-<BR>
-<B>Fastest Hand in the midwest</B> 
-<BR>
-<B></B> 
-<BR>
-
-  <br><br>
-  </CENTER>
-
-
-  
-<FONT SIZE=7 COLOR="ORANGE" FACE="Comic Sans MS">
-<P ALIGN=CENTER>
-  <IMG SRC="https://media.tenor.com/Ug1P7fkAYG8AAAAM/dancing-dog-excited.gif" WIDTH=1200 HEIGHT=600>
-<br>
-
-
-<a href="https://media.tenor.com/Ug1P7fkAYG8AAAAM/dancing-dog-excited.gif" target="_blank">what the dog doin</a>
-</P>
-</FONT>
-<BR>
-
-   
-<P ALIGN=CENTER>Want to contact <B>me</B>?</P>
-<P ALIGN=CENTER>Add me on <I>discord</I> @corgicarpet</P>
- 
-<P ALIGN=CENTER>
- Visit our <B>reddit</B> 
- <a href="https://www.reddit.com/r/corgicarpet/" target="_blank"> LINK</a>
-
-</P>
-  <h2>Messages</h2>
-  
-
-  <h1>Simple Forum</h1>
-  <div>
-    <input type="text" id="username" placeholder="Your name">
-    <textarea id="message" placeholder="Your message"></textarea>
-    <button onclick="postMessage()">Post Message</button>
-  </div>
-  <h2>Messages</h2>
-  <div id="messages"></div>
-   <script>
-    // Your web app's Firebase configuration (replace with your own Firebase config)
-    const firebaseConfig = {
-      apiKey: "AIzaSyD3hwHOx5NDen-k7yANLysnspVFgYLNzCw",
-      authDomain: "corgicarpete.firebaseapp.com",
-      projectId: "corgicarpete",
-      storageBucket: "corgicarpete.appspot.com",
-      messagingSenderId: "52114819259",
-      appId: "1:52114819259:web:78300cb8bd344fb63d419e",
-      measurementId: "G-23LRBP79MY"
-    };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore(app);
-
-    // Function to post a message
-    function postMessage() {
-      const username = document.getElementById('username').value;
-      const message = document.getElementById('message').value;
-      db.collection('messages').add({
-        username: username,
-        message: message,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      }).then(() => {
-        document.getElementById('username').value = '';
-        document.getElementById('message').value = '';
-        loadMessages();
-      });
-    }
-
-    // Function to load messages
-    function loadMessages() {
-      db.collection('messages').orderBy('timestamp', 'desc').onSnapshot((snapshot) => {
-        const messagesDiv = document.getElementById('messages');
-        messagesDiv.innerHTML = '';
-        snapshot.forEach((doc) => {
-          const messageData = doc.data();
-          messagesDiv.innerHTML += `<p><strong>${messageData.username}:</strong> ${messageData.message}</p>`;
-        });
-      });
-    }
-
-    // Load messages when the page loads
-    window.onload = loadMessages;
-  </script>
-  <BR>
-  <BR>
-  <!
- <input type="text" id="fname" placeholder="Send message" name="fname">
-  <input type="button" id="btn1" value="Enter">
-  >
-<iframe src="https://www3.cbox.ws/box/?boxid=3539010&boxtag=62hCgX" width="30%" height="300" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>	
-  <p class = "output" id="output1" ></p>
-
-  <script>
-    const txt1 = document.getElementById('fname');
-    const btn1 = document.getElementById('btn1');
-    const out1 = document.getElementById('output1');
-    function fun1(){
-      out1.innerHTML = txt1.value;
-    }
-
-    btn1.addEventListener('click',fun1);
-  </script>
-  
-    
-  <FONT SIZE=5 COLOR="ORANGE" FACE="Comic Sans MS">
-<P ALIGN=CENTER>
-<a href="https://corgicarp.carrd.co/" target="_blank">old</a>
- version 1.0.5
-</P>
-</FONT>
-<BR>
-<HR SIZE=3>
-</BODY>
-</HTML>
+<!DOCTYPE html><html lang="en"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Professional Tech Page</title>    <link rel="stylesheet" href="styles.css"></head><body>    <header>        <h1>Welcome to My Professional Page</h1>        <p>Your space for networking and discussion</p>    </header>    <section id="bio">        <h2>About Me</h2>        <p>Insert a short bio here.</p>    </section>    <section id="social-media">        <h2>Connect with Me</h2>        <ul>            <li><a href="#">Twitter</a></li>            <li><a href="#">LinkedIn</a></li>            <li><a href="#">GitHub</a></li>        </ul>    </section>    <section id="gallery">        <h2>Gallery</h2>        <div class="image-container">            <img src="placeholder.jpg" alt="Image 1">            <img src="placeholder.jpg" alt="Image 2">            <img src="placeholder.jpg" alt="Image 3">        </div>    </section>    <section id="chat-box">        <h2>Live Chat</h2>        <div id="chat-messages"></div>        <input type="text" id="chat-input" placeholder="Type your message...">        <button onclick="sendMessage()">Send</button>    </section>    <script src="script.js"></script></body></html>
