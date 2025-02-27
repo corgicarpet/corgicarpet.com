@@ -1,61 +1,51 @@
 // Your web app's Firebase configuration
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+ import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
+
+
 const firebaseConfig = {
-    apiKey: "AIzaSyB6EYgNG0YAIQaHYuYRC7OkNkjM2YlibEk",
-    authDomain: "corgicarpet-2b755.firebaseapp.com",
-    databaseURL: "https://corgicarpet-2b755-default-rtdb.firebaseio.com/",
-    projectId: "corgicarpet-2b755",
-    storageBucket: "corgicarpet-2b755.appspot.com",
-    messagingSenderId: "1039226205657",
-    appId: "1:1039226205657:web:5968db94185f840c2355c8"
+
+  apiKey: "AIzaSyDIoYx1wJe0V5Rl_YlvLnye09RpnkuDhvo",
+
+  authDomain: "corgicarpet-com.firebaseapp.com",
+
+  projectId: "corgicarpet-com",
+
+  storageBucket: "corgicarpet-com.firebasestorage.app",
+
+  messagingSenderId: "766693233014",
+
+  appId: "1:766693233014:web:7d4ffd414e8f935a15ea57",
+
+  measurementId: "G-GD5WHC7P76"
+
 };
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+const db = firebase.database();
 
-document.getElementById('messageForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    const username = document.getElementById('username').value;
-    const message = document.getElementById('message').value;
+// Reference messages
+const messagesRef = db.ref("messages");
 
-    // Create a new message object
-    const newMessage = {
-        username: username,
-        message: message,
-        timestamp: new Date().toISOString()
-    };
+// Send message function
+function sendMessage() {
+    let input = document.getElementById("chat-input");
+    let message = input.value.trim();
 
-    // Save the message to the backend
-    saveMessage(newMessage);
-    
-    // Clear the form
-    document.getElementById('messageForm').reset();
+    if (message !== "") {
+        messagesRef.push().set({
+            text: message,
+            timestamp: Date.now()
+        });
+        input.value = ""; // Clear input
+    }
+}
+
+// Listen for new messages
+messagesRef.on("child_added", (snapshot) => {
+    let message = snapshot.val();
+    let messageDiv = document.createElement("div");
+    messageDiv.textContent = message.text;
+    document.getElementById("chat-messages").appendChild(messageDiv);
 });
-
-// Function to save the message to the backend
-function saveMessage(message) {
-    const messageRef = database.ref('messages').push();
-    messageRef.set(message);
-}
-
-// Function to load messages from the backend
-function loadMessages() {
-    const messagesRef = database.ref('messages');
-    messagesRef.on('value', (snapshot) => {
-        const messages = snapshot.val();
-        const messagesDiv = document.getElementById('messages');
-        messagesDiv.innerHTML = '';
-
-        for (let id in messages) {
-            const message = messages[id];
-            const messageDiv = document.createElement('div');
-            messageDiv.innerHTML = `<strong>${message.username}</strong>: ${message.message} <em>${new Date(message.timestamp).toLocaleString()}</em>`;
-            messagesDiv.appendChild(messageDiv);
-        }
-    });
-}
-
-// Call loadMessages to fetch and display messages when the page loads
-loadMessages();
