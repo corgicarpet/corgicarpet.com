@@ -11,9 +11,10 @@ body, html {
 /* Main layout using flexbox */
 .main-container {
     display: flex;
-    min-height: 100vh;
+    min-height: 100vh;  /* Ensure the container takes up the full height */
     flex-direction: row;
-    margin-right: 200px; /* Space for chat box */
+    margin-right: 200px; /* Add space for the chat box on the right */
+    background-color: #2e1a47; /* Ensure the background color of the main container is the same */
 }
 
 /* Central content area */
@@ -21,6 +22,38 @@ body, html {
     flex: 1;
     padding: 20px;
     overflow: auto;
+    background-color: transparent; /* Remove the background color here to show body background */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Gallery section */
+#gallery {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap; /* Wraps the images onto new lines if needed */
+    gap: 20px; /* Space between images */
+}
+
+#gallery img {
+    width: 30%; /* Set the images to be 30% of the width of the container */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px; /* Rounded corners for images */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add some shadow for effect */
+    object-fit: cover; /* Ensures images cover the space well without distorting */
+}
+
+/* Gallery responsiveness */
+@media (max-width: 768px) {
+    #gallery img {
+        width: 48%; /* Adjust width for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    #gallery img {
+        width: 100%; /* Images take full width on very small screens */
+    }
 }
 
 /* Right side chat box */
@@ -76,94 +109,4 @@ body, html {
 
 #toggle-chat-button:hover {
     background-color: #e67e22; /* Hover effect for the button */
-}
-
-/* Username input */
-#username-input {
-    width: 100%;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #f39c12;
-    background-color: #3a1e6f;
-    color: #f8f8f8;
-    margin-bottom: 10px;
-}
-
-/* Messages section inside the chat box */
-#chat-messages {
-    flex: 1;
-    margin-bottom: 10px;
-    padding: 5px;
-    max-height: 90%;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    color: #f8f8f8;
-}
-
-/* Individual message styles */
-.message {
-    padding: 10px;
-    border-radius: 5px;
-    margin: 5px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.message:nth-child(even) {
-    background-color: #3a1e6f;
-}
-
-.message:nth-child(odd) {
-    background-color: #4e2a7f;
-}
-
-/* Timestamp style */
-.timestamp {
-    font-size: 0.75rem;
-    color: rgba(170, 170, 170, 0.7);
-    margin-left: 10px;
-    text-align: right;
-    display: inline-block;
-    width: 100%;
-}
-
-/* Input field and button styles */
-#chat-input {
-    width: calc(100% - 60px);
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #f39c12;
-    background-color: #3a1e6f;
-    color: #f8f8f8;
-    margin-bottom: 10px;
-}
-
-#send-button {
-    padding: 10px;
-    background-color: #f39c12;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
-
-#send-button:hover {
-    background-color: #e67e22;
-}
-
-/* Gallery section */
-#gallery .photo-gallery {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-#gallery .photo-gallery img {
-    width: 30%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
