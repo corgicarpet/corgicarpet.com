@@ -1,24 +1,13 @@
-// Your web app's Firebase configuration
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
- import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
-
-
+// Firebase Configuration
 const firebaseConfig = {
-
-  apiKey: "AIzaSyDIoYx1wJe0V5Rl_YlvLnye09RpnkuDhvo",
-
-  authDomain: "corgicarpet-com.firebaseapp.com",
-
-  projectId: "corgicarpet-com",
-
-  storageBucket: "corgicarpet-com.firebasestorage.app",
-
-  messagingSenderId: "766693233014",
-
-  appId: "1:766693233014:web:7d4ffd414e8f935a15ea57",
-
-  measurementId: "G-GD5WHC7P76"
-
+    apiKey: "AIzaSyDIoYx1wJe0V5Rl_YlvLnye09RpnkuDhvo",
+    authDomain: "corgicarpet-com.firebaseapp.com",
+    databaseURL: "https://corgicarpet-com-default-rtdb.firebaseio.com", // <-- Make sure this is correct
+    projectId: "corgicarpet-com",
+    storageBucket: "corgicarpet-com.appspot.com", // <-- Corrected this
+    messagingSenderId: "766693233014",
+    appId: "1:766693233014:web:7d4ffd414e8f935a15ea57",
+    measurementId: "G-GD5WHC7P76"
 };
 
 // Initialize Firebase
