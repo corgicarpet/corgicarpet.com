@@ -128,3 +128,16 @@ header h1 {
 #send-button:hover {
     background-color: #e67e22; /* Slightly darker orange on hover */
 }
+
+/* Photo Gallery Container */
+.photo-gallery {
+    display: flex;
+    flex-wrap: wrap; /* Allows images to wrap to the next line if there's not enough space */
+    justify-content: space-evenly; /* Distribute space evenly between images */
+    gap: 20px; /* Add spacing between the images */
+    padding: 20px; /* Padding around the container */
+}
+
+/* Individual Image Styling */
+.photo-gallery img {
+    width: 200px; /* Fixed w
