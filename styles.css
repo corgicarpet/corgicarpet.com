@@ -77,6 +77,9 @@ header h1 {
     padding: 10px;
     border-radius: 5px;
     margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Alternating colors for messages */
@@ -91,8 +94,11 @@ header h1 {
 /* Timestamp style */
 .timestamp {
     font-size: 0.8rem;
-    color: #aaa; /* Slightly grayed-out timestamp */
+    color: rgba(170, 170, 170, 0.7); /* More gray and transparent */
     margin-left: 10px;
+    text-align: right;
+    display: inline-block;
+    width: 100%; /* Ensures it takes up the full width of the message container */
 }
 
 /* Input field and button styles */
