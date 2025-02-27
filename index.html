@@ -101,7 +101,7 @@
             };
 
             // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
+            const app = initializeApp(firebaseConfig);
             const db = firebase.database();
             const messagesRef = db.ref("messages");
 
