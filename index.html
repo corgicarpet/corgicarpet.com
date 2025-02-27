@@ -6,30 +6,52 @@
     <title>Professional Tech Page</title>
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Add your custom styles for the chat box here -->
+    <!-- Add your custom styles for the layout here -->
     <style>
-        /* Styles for the chat box */
+        /* Reset basic styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* Main layout using flexbox */
+        .main-container {
+            display: flex;
+            min-height: 100vh; /* Full screen height */
+            flex-direction: row;
+        }
+
+        /* Central content area */
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow: auto;
+        }
+
+        /* Right side chat box */
         #chat-box {
             position: fixed;
             right: 0;
-            bottom: 20px; /* You can adjust the bottom margin */
-            width: 300px; /* You can adjust the width */
-            max-height: 400px; /* Adjust this to control how tall the chat box is */
-            background-color: #f1f1f1; /* Background color */
-            border: 2px solid #ccc; /* Border */
-            border-radius: 10px; /* Rounded corners */
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect */
+            top: 0;
+            width: 300px;
+            height: 100%;
+            background-color: #f1f1f1;
+            border-left: 2px solid #ccc;
+            box-shadow: -4px 0px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
             padding: 10px;
-            overflow-y: scroll; /* Make the messages scrollable */
-            z-index: 1000; /* Ensure it's on top of other elements */
+            justify-content: space-between;
         }
 
-        /* Style the messages container inside the chat box */
+        /* Messages section inside the chat box */
         #chat-messages {
+            flex: 1;
             margin-bottom: 10px;
             padding: 5px;
-            max-height: 300px; /* Limit the height of the messages area */
-            overflow-y: auto; /* Make the messages area scrollable */
+            max-height: 90%;
+            overflow-y: auto;
         }
 
         /* Style individual message elements */
@@ -43,15 +65,14 @@
 
         /* Input field and button styles */
         #chat-input {
-            width: calc(100% - 60px); /* Full width minus space for the button */
+            width: calc(100% - 60px);
             padding: 8px;
-            margin-right: 10px; /* Space between input and button */
             border-radius: 5px;
         }
 
         #send-button {
             padding: 10px;
-            background-color: #007bff; /* Button color */
+            background-color: #007bff;
             color: white;
             border: none;
             border-radius: 5px;
@@ -59,7 +80,12 @@
         }
 
         #send-button:hover {
-            background-color: #0056b3; /* Button hover color */
+            background-color: #0056b3;
+        }
+
+        /* Additional content styles */
+        header, #bio, #social-media, #gallery {
+            margin-bottom: 20px;
         }
     </style>
 
@@ -112,81 +138,47 @@
     </script>
 </head>
 <body>
-    <header>
-        <h1>Welcome to My Professional Page</h1>
-        <p>Your space for networking and discussion</p>
-    </header>
-    <section id="bio">
-        <h2>About Me</h2>
-        <p>Insert a short bio here.</p>
-    </section>
-    <section id="social-media">
-        <h2>Connect with Me</h2>
-        <ul>
-            <li><a href="#">Twitter</a></li>
-            <li><a href="#">LinkedIn</a></li>
-            <li><a href="#">GitHub</a></li>
-        </ul>
-    </section>
-    <section id="gallery">
-        <h2>Gallery</h2>
-        <div class="image-container">
-            <img src="https://i.pinimg.com/736x/f0/b8/c7/f0b8c7ed7d4edaaf5f13658961a5808a.jpg" alt="Image 1">
-            <img src="https://i.ytimg.com/vi/WiNFLXYmbew/maxresdefault.jpg" alt="Image 2">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKpklZWGQSCho5S-hLB16ihk5VTtmOEp6IaQ&s" alt="Image 3">
+
+    <div class="main-container">
+        <!-- Central content area -->
+        <div class="content">
+            <header>
+                <h1>Welcome to My Professional Page</h1>
+                <p>Your space for networking and discussion</p>
+            </header>
+
+            <section id="bio">
+                <h2>About Me</h2>
+                <p>Insert a short bio here.</p>
+            </section>
+
+            <section id="social-media">
+                <h2>Connect with Me</h2>
+                <ul>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">GitHub</a></li>
+                </ul>
+            </section>
+
+            <section id="gallery">
+                <h2>Gallery</h2>
+                <div class="image-container">
+                    <img src="https://i.pinimg.com/736x/f0/b8/c7/f0b8c7ed7d4edaaf5f13658961a5808a.jpg" alt="Image 1">
+                    <img src="https://i.ytimg.com/vi/WiNFLXYmbew/maxresdefault.jpg" alt="Image 2">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKpklZWGQSCho5S-hLB16ihk5VTtmOEp6IaQ&s" alt="Image 3">
+                </div>
+            </section>
         </div>
-    </section>
-    <section id="chat-box">
-        <h2>Live Chat</h2>
-        <div id="chat-messages"></div>
-        <input type="text" id="chat-input" placeholder="Type your message...">
-        <button id="send-button">Send</button>
-    </section>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Firebase Configuration
-            const firebaseConfig = {
-                apiKey: "AIzaSyDIoYx1wJe0V5Rl_YlvLnye09RpnkuDhvo",
-                authDomain: "corgicarpet-com.firebaseapp.com",
-                databaseURL: "https://corgicarpet-com-default-rtdb.firebaseio.com",
-                projectId: "corgicarpet-com",
-                storageBucket: "corgicarpet-com.appspot.com",
-                messagingSenderId: "766693233014",
-                appId: "1:766693233014:web:7d4ffd414e8f935a15ea57",
-                measurementId: "G-GD5WHC7P76"
-            };
 
-            // Initialize Firebase
-            const app = initializeApp(firebaseConfig);
-            const db = firebase.database();
-            const messagesRef = db.ref("messages");
+        <!-- Right-side chat box -->
+        <section id="chat-box">
+            <h2>Live Chat</h2>
+            <div id="chat-messages"></div>
+            <input type="text" id="chat-input" placeholder="Type your message...">
+            <button id="send-button">Send</button>
+        </section>
+    </div>
 
-            // Send message function
-            function sendMessage() {
-                let input = document.getElementById("chat-input");
-                let message = input.value.trim();
-
-                if (message !== "") {
-                    messagesRef.push({
-                        text: message,
-                        timestamp: Date.now()
-                    });
-                    input.value = ""; // Clear input
-                }
-            }
-
-            // Listen for new messages
-            messagesRef.on("child_added", (snapshot) => {
-                let message = snapshot.val();
-                let messageDiv = document.createElement("div");
-                messageDiv.textContent = message.text;
-                document.getElementById("chat-messages").appendChild(messageDiv);
-            });
-
-            // Attach event listener to button
-            document.getElementById("send-button").addEventListener("click", sendMessage);
-        });
-    </script>
 </body>
 </html>
