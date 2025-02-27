@@ -47,7 +47,8 @@ header h1 {
     flex-direction: column;
     padding: 10px;
     justify-content: flex-end;
-    padding-bottom: 40px; /* Increased padding to ensure button is not cut off */
+    padding-bottom: 60px; /* Increased padding to avoid clipping the button */
+    box-sizing: border-box; /* Ensures padding is included in the overall height calculation */
 }
 
 /* Username input */
@@ -120,7 +121,8 @@ header h1 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-bottom: 10px; /* Add margin to the bottom of the button */
+    margin-bottom: 20px; /* Add more margin to the bottom to ensure it's fully visible */
+    box-sizing: border-box;
 }
 
 #send-button:hover {
