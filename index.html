@@ -11,19 +11,31 @@
     import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
 
     // Firebase Configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyDIoYx1wJe0V5Rl_YlvLnye09RpnkuDhvo",
-        authDomain: "corgicarpet-com.firebaseapp.com",
-        databaseURL: "https://corgicarpet-com-default-rtdb.firebaseio.com",
-        projectId: "corgicarpet-com",
-        storageBucket: "corgicarpet-com.appspot.com",
-        messagingSenderId: "766693233014",
-        appId: "1:766693233014:web:7d4ffd414e8f935a15ea57",
-        measurementId: "G-GD5WHC7P76"
-    };
+     const firebaseConfig = {
+
+    apiKey: "AIzaSyDIoYx1wJe0V5Rl_YlvLnye09RpnkuDhvo",
+
+    authDomain: "corgicarpet-com.firebaseapp.com",
+
+    databaseURL: "https://corgicarpet-com-default-rtdb.firebaseio.com",
+
+    projectId: "corgicarpet-com",
+
+    storageBucket: "corgicarpet-com.firebasestorage.app",
+
+    messagingSenderId: "766693233014",
+
+    appId: "1:766693233014:web:7d4ffd414e8f935a15ea57",
+
+    measurementId: "G-GD5WHC7P76"
+
+  };
+
+
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
+
     const db = getDatabase(app);
     const messagesRef = ref(db, "messages");
 
