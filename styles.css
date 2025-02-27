@@ -13,7 +13,7 @@ body, html {
     display: flex;
     min-height: 100vh;  /* Ensure the container takes up the full height */
     flex-direction: row;
-    margin-right: 250px; /* Add space for the chat box on the right */
+    margin-right: 200px; /* Add space for the chat box on the right */
     background-color: #2e1a47; /* Ensure the background color of the main container is the same */
 }
 
@@ -49,6 +49,17 @@ header h1 {
     justify-content: flex-end;
 }
 
+/* Username input */
+#username-input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #f39c12;
+    background-color: #3a1e6f;
+    color: #f8f8f8;
+    margin-bottom: 10px;
+}
+
 /* Messages section inside the chat box */
 #chat-messages {
     flex: 1;
@@ -61,19 +72,42 @@ header h1 {
     color: #f8f8f8; /* Light text for messages */
 }
 
+/* Individual message styles */
+.message {
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+/* Alternating colors for messages */
+.message:nth-child(even) {
+    background-color: #3a1e6f;
+}
+
+.message:nth-child(odd) {
+    background-color: #4e2a7f;
+}
+
+/* Timestamp style */
+.timestamp {
+    font-size: 0.8rem;
+    color: #aaa; /* Slightly grayed-out timestamp */
+    margin-left: 10px;
+}
+
 /* Input field and button styles */
 #chat-input {
     width: calc(100% - 60px);
     padding: 8px;
     border-radius: 5px;
-    border: 1px solid #f39c12; /* Orange border */
-    background-color: #3a1e6f; /* Match dark purple background */
-    color: #f8f8f8; /* Light text color */
+    border: 1px solid #f39c12;
+    background-color: #3a1e6f;
+    color: #f8f8f8;
 }
 
 #send-button {
     padding: 10px;
-    background-color: #f39c12; /* Light orange background */
+    background-color: #f39c12;
     color: white;
     border: none;
     border-radius: 5px;
@@ -82,60 +116,4 @@ header h1 {
 
 #send-button:hover {
     background-color: #e67e22; /* Slightly darker orange on hover */
-}
-
-/* Additional content styles */
-header, #bio, #social-media, #gallery {
-    margin-bottom: 20px;
-}
-
-/* Gallery image container */
-.image-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 0px;
-    flex-wrap: wrap;
-}
-
-.image-container img {
-    width: 100%;
-    max-width: 30%;
-    height: auto;
-    object-fit: cover;
-}
-
-/* Link colors for social media */
-a {
-    color: #f39c12; /* Light orange links */
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Bio section styles */
-#bio {
-    background-color: #3a1e6f;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Social media section styles */
-#social-media ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-#social-media ul li {
-    margin: 5px 0;
-}
-
-/* Gallery section styles */
-#gallery {
-    background-color: #3a1e6f;
-    padding: 0px;
-    border-radius: 3px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
