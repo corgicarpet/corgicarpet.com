@@ -89,6 +89,21 @@
         header, #bio, #social-media, #gallery {
             margin-bottom: 20px;
         }
+
+          /* Gallery image container */
+        .image-container {
+            display: flex; /* Use Flexbox for layout */
+            justify-content: space-between; /* Space the images evenly */
+            gap: 10px; /* Add space between the images */
+            flex-wrap: wrap; /* Allow wrapping if the container is too narrow */
+        }
+
+        .image-container img {
+            width: 100%; /* Scale the images to fit their container */
+            max-width: 30%; /* Limit the width to ensure they don't get too large */
+            height: auto; /* Maintain aspect ratio */
+            object-fit: cover; /* Ensures images fill the area without distortion */
+        }
     </style>
 
     <script type="module">
