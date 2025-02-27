@@ -140,4 +140,8 @@ header h1 {
 
 /* Individual Image Styling */
 .photo-gallery img {
-    width: 200px; /* Fixed w
+    width: 200px; /* Fixed width */
+    height: 200px; /* Fixed height */
+    object-fit: cover; /* Ensures images maintain aspect ratio without stretching */
+    border-radius: 10px; /* Rounded corners */
+}
