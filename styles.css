@@ -47,7 +47,7 @@ header h1 {
     flex-direction: column;
     padding: 10px;
     justify-content: flex-end;
-    padding-bottom: 20px; /* Add padding to the bottom to avoid the button being cut off */
+    padding-bottom: 40px; /* Increased padding to ensure button is not cut off */
 }
 
 /* Username input */
@@ -94,7 +94,7 @@ header h1 {
 
 /* Timestamp style */
 .timestamp {
-    font-size: 0.05rem;
+    font-size: 0.75rem; /* Adjusted font size for better readability */
     color: rgba(170, 170, 170, 0.7); /* More gray and transparent */
     margin-left: 10px;
     text-align: right;
