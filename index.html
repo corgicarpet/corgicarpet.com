@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>corgicarpet's website</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Ensure your CSS file is correctly linked -->
+    <link rel="stylesheet" href="styles.css">
 
     <script type="module">
-        // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
         import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
 
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDIoYx1wJe0V5Rl_YlvLnye09RpnkuDhvo",
             authDomain: "corgicarpet-com.firebaseapp.com",
@@ -23,12 +21,10 @@
             measurementId: "G-GD5WHC7P76"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const messagesRef = ref(db, "messages");
 
-        // Send message function
         function sendMessage() {
             let input = document.getElementById("chat-input");
             let message = input.value.trim();
@@ -44,43 +40,35 @@
             }
         }
 
-        // Listen for the Enter key to send a message
         document.getElementById("chat-input").addEventListener("keydown", function(event) {
-            if (event.key === "Enter") { // Check if Enter key is pressed
-                event.preventDefault(); // Prevent the default "Enter" behavior (which adds a new line)
-                sendMessage(); // Send the message
+            if (event.key === "Enter") {
+                event.preventDefault();
+                sendMessage();
             }
         });
 
-        // Listen for new messages from Firebase
         onChildAdded(messagesRef, (snapshot) => {
             let message = snapshot.val();
             let messageDiv = document.createElement("div");
             messageDiv.classList.add("message");
-
-            // Format the message with username and timestamp
-            let username = message.username || "Anonymous";  // Default to "Anonymous" if undefined
             let formattedMessage = `${message.username}: ${message.text} <span class="timestamp">${new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>`;
             messageDiv.innerHTML = formattedMessage;
             document.getElementById("chat-messages").appendChild(messageDiv);
 
-            // Scroll to the bottom to focus the latest message
             const chatMessagesContainer = document.getElementById("chat-messages");
             chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
         });
 
-        // Attach event listener to button
         document.getElementById("send-button").addEventListener("click", sendMessage);
 
-        // Function to toggle chat visibility
         function toggleChat() {
             const chatBox = document.getElementById("chat-box");
-            chatBox.classList.toggle("collapsed");
             const toggleButton = document.getElementById("toggle-chat-button");
+            chatBox.classList.toggle("collapsed");
             if (chatBox.classList.contains("collapsed")) {
-                toggleButton.innerText = "Expand Chat"; // Change button text to "Expand Chat" when collapsed
+                toggleButton.innerText = "Expand Chat";
             } else {
-                toggleButton.innerText = "Collapse Chat"; // Change button text to "Collapse Chat" when expanded
+                toggleButton.innerText = "Collapse Chat";
             }
         }
     </script>
@@ -88,7 +76,6 @@
 <body>
 
     <div class="main-container">
-        <!-- Central content area -->
         <div class="content">
             <header>
                 <h1>corgicarpet's webpage</h1>
@@ -119,17 +106,12 @@
             </section>
         </div>
 
-        <!-- Right-side chat box -->
         <section id="chat-box">
             <h2>Live Chat</h2>
-
             <div id="chat-messages"></div>
-            <!-- Username input field -->
             <input type="text" id="username-input" placeholder="Enter your username">
             <input type="text" id="chat-input" placeholder="Type your message...">
             <button id="send-button">Send</button>
-
-            <!-- Button to collapse/expand the chat section -->
             <button id="toggle-chat-button" onclick="toggleChat()">Collapse Chat</button>
         </section>
     </div>
