@@ -129,19 +129,16 @@ header h1 {
     background-color: #e67e22; /* Slightly darker orange on hover */
 }
 
-/* Photo Gallery Container */
+/* Gallery styles */
 .photo-gallery {
     display: flex;
-    flex-wrap: wrap; /* Allows images to wrap to the next line if there's not enough space */
-    justify-content: space-evenly; /* Distribute space evenly between images */
-    gap: 20px; /* Add spacing between the images */
-    padding: 20px; /* Padding around the container */
+    flex-wrap: wrap; /* Allow images to wrap onto new rows if needed */
+    gap: 10px; /* Space between the images */
 }
 
-/* Individual Image Styling */
 .photo-gallery img {
-    width: 200px; /* Fixed width */
-    height: 200px; /* Fixed height */
-    object-fit: cover; /* Ensures images maintain aspect ratio without stretching */
-    border-radius: 10px; /* Rounded corners */
+    width: 200px; /* Fixed size for each image */
+    height: 200px; /* Fixed size for each image */
+    object-fit: cover; /* Ensure aspect ratio is maintained */
+    border-radius: 5px;
 }
