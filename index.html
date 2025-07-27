@@ -1,141 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>corgicarpet's website</title>
-    <link rel="stylesheet" href="styles.css">
+<html>
+    <head>
+        <title>Blackjack</title>
+        <link rel="stylesheet" href="styles.css">
 
-    <script type="module">
-        // Import Firebase modules
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
-        import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
-
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDIoYx1wJe0V5Rl_YlvLnye09RpnkuDhvo",
-            authDomain: "corgicarpet-com.firebaseapp.com",
-            databaseURL: "https://corgicarpet-com-default-rtdb.firebaseio.com",
-            projectId: "corgicarpet-com",
-            storageBucket: "corgicarpet-com.appspot.com",
-            messagingSenderId: "766693233014",
-            appId: "1:766693233014:web:7d4ffd414e8f935a15ea57",
-            measurementId: "G-GD5WHC7P76"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const messagesRef = ref(db, "messages");
-
-        // Send message function
-        function sendMessage() {
-            let input = document.getElementById("chat-input");
-            let message = input.value.trim();
-            let username = document.getElementById("username-input").value.trim();
-
-            if (message !== "" && username !== "") {
-                push(messagesRef, {
-                    text: message,
-                    username: username,
-                    timestamp: Date.now()
-                });
-                input.value = ""; // Clear input
-            }
-        }
-
-        // Listen for the Enter key to send a message
-        document.getElementById("chat-input").addEventListener("keydown", function(event) {
-            if (event.key === "Enter") { // Check if Enter key is pressed
-                event.preventDefault(); // Prevent the default "Enter" behavior (which adds a new line)
-                sendMessage(); // Send the message
-            }
-        });
-
-        // Listen for new messages from Firebase
-        onChildAdded(messagesRef, (snapshot) => {
-            let message = snapshot.val();
-            let messageDiv = document.createElement("div");
-            messageDiv.classList.add("message");
-
-            // Format the message with username and timestamp
-            let username = message.username || "Anonymous";  // Default to "Anonymous" if undefined
-            let formattedMessage = `${message.username}: ${message.text} <span class="timestamp">${new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>`;
-            messageDiv.innerHTML = formattedMessage;
-            document.getElementById("chat-messages").appendChild(messageDiv);
-
-            // Scroll to the bottom to focus the latest message
-            const chatMessagesContainer = document.getElementById("chat-messages");
-            chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
-        });
-
-        // Attach event listener to button
-        document.getElementById("send-button").addEventListener("click", sendMessage);
-
-        // Toggle chat visibility
-        function toggleChat() {
-            const chatBox = document.getElementById("chat-box");
-            const toggleButton = document.getElementById("toggle-chat-button");
-
-            chatBox.classList.toggle("collapsed");
-
-            if (chatBox.classList.contains("collapsed")) {
-                toggleButton.innerText = "Expand Chat"; // Update button text
-            } else {
-                toggleButton.innerText = "Collapse Chat"; // Update button text
-            }
-        }
-
-        // Add event listener to the button to toggle chat collapse
-        document.getElementById("toggle-chat-button").addEventListener("click", toggleChat);
-    </script>
-</head>
-<body>
-
-    <div class="main-container">
-        <!-- Central content area -->
-        <div class="content">
-            <header>
-                <h1>corgicarpet's webpage</h1>
-                <p>est 2023</p>
-            </header>
-
-            <section id="bio">
-                <h2>About Me</h2>
-                <p>Hello. I do things sometimes.</p>
-            </section>
-
-            <section id="social-media">
-                <h2>Connect with Me</h2>
-                <ul>
-                    <li><a href="#">Discord</a></li>
-                    <li><a href="#">Steam</a></li>
-                    <li><a href="#">GitHub</a></li>
-                </ul>
-            </section>
-
-            <section id="gallery">
-                <h2>Gallery</h2>
-                <div class="image-container">
-                    <img src="https://i.pinimg.com/736x/f0/b8/c7/f0b8c7ed7d4edaaf5f13658961a5808a.jpg" alt="Image 1">
-                    <img src="https://i.ytimg.com/vi/WiNFLXYmbew/maxresdefault.jpg" alt="Image 2">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKpklZWGQSCho5S-hLB16ihk5VTtmOEp6IaQ&s" alt="Image 3">
-                </div>
-            </section>
+    </head>
+    <body>
+        <h1>Blackjack</h1>
+        <div id = "signin">
+            <span>Sign in to save your progress: </span>
+            <a href="signin.html">Sign in</a>
+            <br>
         </div>
+        <div id="balancecontainer">
+            
+            <span class="balanceprompt">Balance: </span>
+            <span id="balance">
+                50
+            </span>
+            
+            <span class="addbalancebutton">
+                <button id="addbalance">Add 50</button>
+            </span>
+        </div>
+        
+        
+        <br>
+        <br>
+        <div id = "goalcon">
+            <!-- <h1>Goal: </h1> -->
+            <!-- <span id = "goal">?</span> -->
+        </div>
+        <div class = "gamestatus" id = "status">
+            
+        </div>
+        <div id="gamecontainer">
+            <!-- <span class = "cards">
+                <img id="card1" src="images/1B.svg">
+            </span> -->
+            
+            <div id = "playerhand" class="cards">
 
-        <!-- Right-side chat box -->
-        <section id="chat-box">
-            <button id="toggle-chat-button">Collapse Chat</button>
-            <h2>Live Chat</h2>
+            </div>
+            <br>
+            <div id = "dealerhand" class="cards">
 
-            <div id="chat-messages"></div>
-            <!-- Username input field -->
-            <input type="text" id="username-input" placeholder="Enter your username">
-            <input type="text" id="chat-input" placeholder="Type your message...">
-            <button id="send-button">Send</button>
-        </section>
-    </div>
-
-</body>
+            </div>
+            <br>
+            <span class="gamebutton">
+                <button id="hit">Hit</button>
+            </span>
+            <span class="gamebutton">
+                <button id="stand">Stand</button>
+            </span>
+            <br>
+            <div class="betting">
+                <span>Bet: </span>
+                <input type="number" id="bet">
+            </div>
+            <button id="startgame">Start Game</button>
+        </div>
+        <script src="blackjack.js"></script>
+    </body>
 </html>
