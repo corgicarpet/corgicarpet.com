@@ -1,65 +1,423 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Blackjack</title>
-        <link rel="stylesheet" href="styles.css">
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>~/corgicarpet</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
-    </head>
-    <body>
-        <h1>Blackjack</h1>
-        <div id = "signin">
-            <span>Sign in to save your progress: </span>
-            <a href="signin.html">Sign in</a>
-            <br>
-        </div>
-        <div id="balancecontainer">
-            
-            <span class="balanceprompt">Balance: </span>
-            <span id="balance">
-                50
-            </span>
-            
-            <span class="addbalancebutton">
-                <button id="addbalance">Add 50</button>
-            </span>
-        </div>
-        
-        
-        <br>
-        <br>
-        <div id = "goalcon">
-            <!-- <h1>Goal: </h1> -->
-            <!-- <span id = "goal">?</span> -->
-        </div>
-        <div class = "gamestatus" id = "status">
-            
-        </div>
-        <div id="gamecontainer">
-            <!-- <span class = "cards">
-                <img id="card1" src="images/1B.svg">
-            </span> -->
-            
-            <div id = "playerhand" class="cards">
+    :root {
+      --green: #00ff41;
+      --green-dim: #00c832;
+      --green-dark: #007a1f;
+      --green-glow: rgba(0, 255, 65, 0.12);
+      --bg: #0a0a0a;
+      --bg-card: #0f0f0f;
+      --bg-border: #1a2a1a;
+      --text-muted: #4a7a4a;
+      --text-dim: #2a4a2a;
+      --orange: #ffaa44;
+      --orange-dim: #cc7722;
+      --orange-dark: #7a4010;
+      --orange-glow: rgba(255, 170, 68, 0.08);
+      --purple: #a078d0;
+      --purple-dim: #6a4a9a;
+      --purple-link: #b89ee8;
+      --bg: #0b080f;
+      --bg-card: #100d18;
+      --bg-border: #1e1530;
+      --text-muted: #6a4a7a;
+      --text-dim: #3a2550;
+    }
 
-            </div>
-            <br>
-            <div id = "dealerhand" class="cards">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-            </div>
-            <br>
-            <span class="gamebutton">
-                <button id="hit">Hit</button>
-            </span>
-            <span class="gamebutton">
-                <button id="stand">Stand</button>
-            </span>
-            <br>
-            <div class="betting">
-                <span>Bet: </span>
-                <input type="number" id="bet">
-            </div>
-            <button id="startgame">Start Game</button>
-        </div>
-        <script src="blackjack.js"></script>
-    </body>
+    body {
+      background: var(--bg);
+      color: var(--purple);
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    /* scanline overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.08) 2px,
+        rgba(0, 0, 0, 0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    .header {
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--bg-border);
+      padding-bottom: 1.5rem;
+    }
+
+    .prompt-line {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .prompt {
+      color: var(--purple-dark);
+      user-select: none;
+    }
+
+    .hostname {
+      color: var(--purple-dim);
+    }
+
+    .path {
+      color: var(--orange);
+    }
+
+    .site-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--purple);
+      letter-spacing: -0.02em;
+      margin-top: 0.75rem;
+      /* subtle text glow */
+      text-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+    }
+
+    .site-subtitle {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 0.4rem;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 1.1em;
+      background: var(--purple);
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* ── Section Labels ── */
+    .section-label {
+      color: var(--text-muted);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .section-label::before {
+      content: '# ';
+      color: var(--purple-dark);
+    }
+
+    /* ── Projects Grid ── */
+    .section {
+      margin-bottom: 2.5rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1px;
+      background: var(--bg-border);
+      border: 1px solid var(--bg-border);
+    }
+
+    .card {
+      background: var(--bg-card);
+      padding: 1.25rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      background: var(--orange-glow);
+    }
+
+    .card-title {
+      color: var(--orange);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .card-title::before {
+      content: '→ ';
+      color: var(--purple-dark);
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .card-tag {
+      font-size: 11px;
+      color: var(--purple-dark);
+      margin-top: auto;
+      padding-top: 0.5rem;
+    }
+
+    /* ── Links List ── */
+    .links-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .link-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid transparent;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .link-item:hover {
+      border-color: var(--bg-border);
+      background: var(--orange-glow);
+    }
+
+    .link-key {
+      color: var(--purple-dark);
+      min-width: 80px;
+      font-size: 12px;
+    }
+
+    .link-value {
+      color: var(--orange-dim);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      border-top: 1px solid var(--bg-border);
+      padding-top: 1.5rem;
+      color: var(--text-dim);
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    /* ── Uptime / Status bar ── */
+    .statusbar {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-right: 6px;
+      box-shadow: 0 0 6px var(--green);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ── ASCII logo ── */
+    .ascii {
+      color: var(--orange-dark);
+      font-size: 11px;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      white-space: pre;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ASCII banner — optional, swap or delete -->
+  <pre class="ascii">
+  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡠⠤⠤⠤⠤⠤⠤⠤⠤⠤⢄⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⠤⠔⠚⣉⡤⠖⠒⠒⠒⠊⠉⠛⠲⣄⠀⠠⢄⡀⠉⠢⣄⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡠⠴⠒⣋⣉⣁⣀⠤⠒⠋⠁⣠⠔⠒⠉⠁⠀⠀⠀⠀⠈⠦⠀⠀⠈⠳⣄⠈⢣⡀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠤⠖⠉⣠⠖⠉⠁⡀⠀⠀⠀⠀⠀⡨⠆⠀⢀⡤⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣀⣌⢧⠀⠱⡀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣀⠤⠔⠚⢉⣀⣠⣴⣏⠉⠓⠲⣄⡈⠱⠆⠀⡀⠈⠀⠀⠰⠋⣴⣿⣿⣿⣷⣴⡄⣾⠰⡀⠈⢶⣿⣿⣷⠀⡷⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⡞⢁⣤⠖⠋⠙⠛⠿⣿⣯⣄⠐⠶⠒⢤⢠⡄⢰⡇⠀⠀⠀⢀⡏⠛⠿⠿⠿⠿⠿⣿⡏⠀⠙⢄⠈⢿⣿⣿⠀⣷⠀⠀⠀⠀
+⠀⠀⠀⠀⠸⡗⠘⠿⣶⣄⢀⡀⣠⠤⠈⠀⠙⠿⠧⠘⠋⢡⡿⠀⠀⠀⠀⠈⠁⠀⠀⢀⣐⣥⠜⠋⢀⠀⠀⠀⠀⠀⠙⠿⡀⠘⠢⣄⠀⠀
+⠀⠀⠀⠀⠀⠉⠒⢤⣀⠉⠙⠿⣿⡇⠀⠀⠀⠴⠒⠁⠀⣼⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠒⠁⠀⠀⠀⠀⠀⢀⣠⣬⡶⣄⠈⠱⡄
+⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠲⢤⡀⠉⢓⡦⠀⣤⡲⡄⠈⠁⠀⠀⠀⠀⠀⠀⡠⠊⠁⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣶⣿⣿⣿⣿⣾⣷⠀⢱
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠞⠀⡴⠋⠀⠀⠋⠁⠀⠁⠀⠀⠀⠀⠀⠀⠀⠃⠀⢸⣯⡀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿⣿⣿⣿⡟⠀⡼
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠎⠀⡰⠁⠀⠀⠀⠀⠁⠀⠒⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠛⢦⡀⠀⠀⠀⠀⠀⠀⢀⣹⣿⣿⣿⠟⢁⡼⠁
+⠀⠀⠀⠀⠀⠀⠀⠀⡠⠋⠀⡐⠁⠀⠀⠀⠀⠀⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠶⣤⣤⣠⣤⣴⣿⣿⣿⣿⠃⢠⠛⠁⠀
+⠀⠀⠀⠀⠀⠀⣠⠎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠉⠛⠻⠋⢸⠀⢹⠀⠀⠀
+⠀⠀⠀⠀⠀⡰⠃⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⡃⡆⠎⣰⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠀⢸⠀⠀⠀
+⠀⠀⠀⠀⢰⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⣇⢰⠈⡜⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠂⢸⡆⠀⠀
+⠀⠀⠀⢠⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠚⠠⡾⠄⠘⡄⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⡄⠀⠀⠀⡷⠀⣼⠀⠀⠀
+⠀⠀⢀⠎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠲⠰⢳⣾⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢆⠀⠈⢆⠀⡏⠀⡏⠀⠀⠀
+⠀⢠⠎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠈⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⢠⠁⢀⡃⠀⠀⠀
+⠀⡿⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡰⠁⢸⠇⠀⠀⠀
+⠀⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣞⠀⡸⠀⠀⠀⠀
+⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⡗⠀⡟⠀⠀⠀⠀
+⠀⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠆⠀⡇⠀⠀⠀⠀
+⡼⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡃⠀⡇⠀⠀⠀⠀
+⣇⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡔⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢈⡃⠀⡇⠀⠀⠀⠀
+⡞⠁⠀⠀⠀⠀⠀⠀⢠⠂⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⡞⠀⣰⠀⠀⠀⣀⠀⡆⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⢐⡓⠀⡇⠀⠀⠀⠀
+⣇⠀⣀⣀⣀⣀⣀⣀⣃⣰⣃⣐⣋⣀⣀⣀⣀⣀⣀⣀⣀⣀⣈⣑⣃⣈⣀⣀⣀⣋⣀⣹⣋⣧⣣⣀⣀⣀⣀⣀⣀⣀⣀⣗⠀⡿⠀⠀⠀⠀
+⠘⠦⠄⠀⠀⠀⠤⠤⠤⠤⠤⠠⠤⠀⠄⠄⠀⠀⠀⠀⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠤⠄⠠⠄⠀⠤⠤⠤⠄⠠⠼⠁⠀⠀⠀⠀</pre>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="prompt-line">
+      <span class="prompt">┌──(</span>
+      <span class="hostname">me</span>
+      <span class="prompt">@</span>
+      <span class="hostname">corgicarpet.com</span>
+      <span class="prompt">)-[</span>
+      <span class="path">~/home</span>
+      <span class="prompt">]</span>
+    </div>
+    <div class="site-title">cat<span class="cursor"></span></div>
+    <div class="site-subtitle">$ whoami — developer / fukass</div>
+  </div>
+
+  <!-- Status -->
+  <div class="statusbar">
+    <span><span class="status-dot"></span>online</span>
+    <span id="uptime">uptime: calculating...</span>
+    <span id="localtime">time: --:--:--</span>
+  </div>
+
+  <!-- Projects Section -->
+  <div class="section">
+    <div class="section-label">redirects</div>
+    <div class="cards">
+
+      <!-- Blackjack game card — links to your existing index page -->
+      <!-- Move your current index.html to /blackjack/index.html and update href -->
+      <a class="card" href="/blackjack/">
+        <div class="card-title">blackjack</div>
+        <div class="card-desc">browser-based card game. old project</div>
+        <div class="card-tag">[html css javascript]</div>
+      </a>
+
+      <!-- Add more project cards here -->
+      <a class="card" href="http://home.corgicarpet.com">
+        <div class="card-title">homarr</div>
+        <div class="card-desc">dashboard of plex related</div>
+        <div class="card-tag">[docker]</div>
+      </a>
+      <a class="card" href="http://requests.corgicarpet.com">
+        <div class="card-title">seerr</div>
+        <div class="card-desc">request shows to download for homelab</div>
+        <div class="card-tag">[docker]</div>
+      </a>
+      <a class="card" href="http://qbit.corgicarpet.com">
+        <div class="card-title">qbittorrent</div>
+        <div class="card-desc">see current downloads for homelab</div>
+        <div class="card-tag">[docker]</div>
+      </a>
+      <a class="card" href="http://security.corgicarpet.com">
+        <div class="card-title">cams</div>
+        <div class="card-desc">security related things</div>
+        <div class="card-tag">[python]</div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Links Section -->
+  <div class="section">
+    <div class="section-label">handles</div>
+    <div class="links-list">
+      <a class="link-item" href="https://github.com/corgicarpet" target="_blank">
+        <span class="link-key">github</span>
+        <span class="link-value">github.com/your-username</span>
+      </a>
+      <a class="link-item" href="https://reddit.com/u/corgicarpet">
+        <span class="link-key">reddit</span>
+        <span class="link-value">reddit.com/u/corgicarpet</span>
+      </a>
+      <a class="link-item" href="https://steamcommunity.com/my/friends/" target="_blank">
+        <span class="link-key">steamcode</span>
+        <span class="link-value">195823218</span>
+      </a>
+      <a class="link-item" href="https://discord.com/channels/@me">
+        <span class="link-key">discord-user</span>
+        <span class="link-value">corgicarpet</span>
+      </a>
+      <!-- Add more as needed -->
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>© <span id="year"></span> corgicarpet</span>
+    <span>built with pure ai slop</span>
+  </div>
+
+</div>
+
+<script>
+  // current year in footer
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // live clock
+  function tick() {
+    const now = new Date();
+    document.getElementById('localtime').textContent =
+      'time: ' + now.toLocaleTimeString('en-US', { hour12: false });
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // uptime from a fixed launch date — change this to your site's birthday
+  const launch = new Date('2024-11-14T22:30:00');
+  function updateUptime() {
+    const diff = Date.now() - launch.getTime();
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    document.getElementById('uptime').textContent =
+      `uptime: ${d}d ${h}h ${m}m`;
+  }
+  updateUptime();
+  setInterval(updateUptime, 60000);
+</script>
+</body>
 </html>

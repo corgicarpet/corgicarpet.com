@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Blackjack</title>
+        <link rel="stylesheet" href="styles.css">
+
+    </head>
+    <body>
+        <h1>Blackjack</h1>
+        <div id = "signin">
+            <span>Sign in to save your progress: </span>
+            <a href="signin.html">Sign in</a>
+            <br>
+        </div>
+        <div id="balancecontainer">
+            
+            <span class="balanceprompt">Balance: </span>
+            <span id="balance">
+                50
+            </span>
+            
+            <span class="addbalancebutton">
+                <button id="addbalance">Add 50</button>
+            </span>
+        </div>
+        
+        
+        <br>
+        <br>
+        <div id = "goalcon">
+            <!-- <h1>Goal: </h1> -->
+            <!-- <span id = "goal">?</span> -->
+        </div>
+        <div class = "gamestatus" id = "status">
+            
+        </div>
+        <div id="gamecontainer">
+            <!-- <span class = "cards">
+                <img id="card1" src="images/1B.svg">
+            </span> -->
+            
+            <div id = "playerhand" class="cards">
+
+            </div>
+            <br>
+            <div id = "dealerhand" class="cards">
+
+            </div>
+            <br>
+            <span class="gamebutton">
+                <button id="hit">Hit</button>
+            </span>
+            <span class="gamebutton">
+                <button id="stand">Stand</button>
+            </span>
+            <br>
+            <div class="betting">
+                <span>Bet: </span>
+                <input type="number" id="bet">
+            </div>
+            <button id="startgame">Start Game</button>
+        </div>
+        <script src="blackjack.js"></script>
+    </body>
+</html>
