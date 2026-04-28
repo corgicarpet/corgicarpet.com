@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workout Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --card: #1a1a1a;
+    --accent: #9447ff;
+    --accent2: #c86d4c;
+    --text: #f0f0f0;
+    --muted: #888;
+    --border: #2a2a2a;
+    --success: #4ade80;
+    --warn: #facc15;
+    --error: #f87171;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 24px 16px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── HEADER ── */
+  header { text-align: center; margin-bottom: 28px; }
+  header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    letter-spacing: 3px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  header p { color: var(--muted); font-size: 0.85rem; margin-top: 6px; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* ── INVENTORY SCREEN ── */
+  .inv-intro {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: #ccc;
+    line-height: 1.6;
+  }
+  .inv-intro strong { color: var(--accent); }
+
+  .saved-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #0a1f0a;
+    border: 1px solid var(--success);
+    color: var(--success);
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .saved-badge.show { opacity: 1; }
+
+  .inv-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .inv-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .inv-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+    color: var(--accent2);
+  }
+  .inv-sublabel { font-size: 0.75rem; color: var(--muted); margin-top: -6px; }
+
+  .counter { display: flex; align-items: center; gap: 10px; }
+  .counter button {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #222;
+    color: var(--text);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  .counter button:hover { background: #333; }
+  .counter input {
+    width: 48px;
+    text-align: center;
+    background: #111;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--accent);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    padding: 4px 0;
+  }
+  .counter input:focus { outline: 1px solid var(--accent); }
+
+  .bar-row {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 12px;
+  }
+  .bar-row-left { flex: 1; }
+  .bar-row-label { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--muted); letter-spacing: 1px; }
+  .bar-row-sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+  .btn-primary {
+    width: 100%; padding: 16px;
+    background: var(--accent); color: #000;
+    border: none; border-radius: 12px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem; letter-spacing: 2px;
+    cursor: pointer; transition: opacity 0.15s; margin-top: 4px;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--accent2); color: var(--accent2); }
+
+  /* ── WORKOUT SCREEN ── */
+  .top-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem; letter-spacing: 2px;
+    color: var(--accent2);
+    margin: 28px 0 12px;
+    border-left: 3px solid var(--accent2);
+    padding-left: 12px;
+  }
+
+  .exercise-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .exercise-card:hover { border-color: var(--accent); }
+
+  .card-header {
+    display: flex; align-items: center;
+    padding: 16px 20px; cursor: pointer; gap: 12px;
+  }
+
+  .exercise-icon {
+    width: 42px; height: 42px;
+    background: var(--accent); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+  }
+
+  .card-meta { flex: 1; }
+  .exercise-name { font-size: 1rem; font-weight: 600; }
+  .exercise-sets { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+  .weight-badge {
+    background: #1f2a00;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem; letter-spacing: 1px;
+    padding: 4px 12px; border-radius: 6px;
+    white-space: nowrap; flex-shrink: 0;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .weight-badge:hover { background: #2a3800; }
+
+  .chevron { color: var(--muted); font-size: 1rem; transition: transform 0.2s; flex-shrink: 0; }
+
+  .card-body {
+    display: none; border-top: 1px solid var(--border);
+    padding: 20px; gap: 16px; flex-direction: column;
+  }
+  .card-body.open { display: flex; }
+
+  .weight-picker {
+    display: flex; align-items: center; gap: 10px;
+    background: #111; border-radius: 10px; padding: 12px 16px;
+  }
+  .weight-picker label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; flex: 1; }
+  .weight-picker .counter input { width: 52px; font-size: 1.3rem; }
+
+  .plate-result { background: #111; border-radius: 10px; padding: 14px 16px; }
+  .plate-result-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+
+  .plate-combo { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .plate {
+    background: #222; border: 2px solid var(--accent2);
+    color: var(--accent2); font-weight: 700; font-size: 0.85rem;
+    padding: 4px 10px; border-radius: 20px;
+  }
+  .plate.bar { border-color: var(--muted); color: var(--muted); }
+  .plus { color: var(--muted); font-size: 0.8rem; }
+
+  .total-row { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--muted); margin-top: 10px; }
+  .total-row strong { color: var(--accent); }
+  .warn-text { color: var(--warn); }
+
+  .tip {
+    background: #111; border-left: 3px solid var(--accent2);
+    padding: 10px 14px; border-radius: 0 8px 8px 0;
+    font-size: 0.85rem; color: #ccc; line-height: 1.5;
+  }
+  .tip span { color: var(--accent2); font-weight: 600; }
+
+  .video-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #1a0a00; border: 1px solid var(--accent2); color: var(--accent2);
+    text-decoration: none; padding: 8px 14px; border-radius: 8px;
+    font-size: 0.85rem; font-weight: 600; transition: background 0.2s; width: fit-content;
+  }
+  .video-link:hover { background: #2a1500; }
+
+  .inv-summary {
+    background: #111; border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; font-size: 0.8rem; color: var(--muted);
+    margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  }
+  .inv-chip {
+    background: #1a1a1a; border: 1px solid var(--border);
+    border-radius: 6px; padding: 2px 8px; font-size: 0.78rem; color: #aaa;
+  }
+  .inv-chip span { color: var(--accent); font-weight: 600; }
+
+  .rest-note {
+    background: #111827; border: 1px solid #2a3a5a; border-radius: 10px;
+    padding: 14px 18px; font-size: 0.85rem; color: #94a3b8;
+    margin-top: 8px; line-height: 1.6;
+  }
+  .rest-note strong { color: var(--accent); }
+
+  .autosave-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--success); display: inline-block;
+    margin-right: 4px; opacity: 0; transition: opacity 0.4s;
+  }
+  .autosave-dot.flash { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ INVENTORY SCREEN ══════════════ -->
+<div id="screen-inv" class="screen active">
+  <header>
+    <h1>Plate Setup</h1>
+    <p>put in ur stuff</p>
+  </header>
+
+  <div class="inv-intro">
+    Enter how many of <strong>each plate</strong> you have total across both handles. Your settings are saved automatically in your browser — they'll be here next time you visit.
+    <br><div class="saved-badge" id="inv-saved-badge">✓ Saved from last time</div>
+  </div>
+
+  <div class="inv-grid">
+    <div class="inv-item">
+      <div><div class="inv-label">6 lb plates</div><div class="inv-sublabel">Total count</div></div>
+      <div class="counter">
+        <button onclick="adj('p6',-1)">−</button>
+        <input type="number" id="p6" value="4" min="0" max="30" oninput="clampInv(this)">
+        <button onclick="adj('p6',1)">+</button>
+      </div>
+    </div>
+    <div class="inv-item">
+      <div><div class="inv-label">4 lb plates</div><div class="inv-sublabel">Total count</div></div>
+      <div class="counter">
+        <button onclick="adj('p4',-1)">−</button>
+        <input type="number" id="p4" value="2" min="0" max="30" oninput="clampInv(this)">
+        <button onclick="adj('p4',1)">+</button>
+      </div>
+    </div>
+    <div class="inv-item">
+      <div><div class="inv-label">2 lb plates</div><div class="inv-sublabel">Total count</div></div>
+      <div class="counter">
+        <button onclick="adj('p2',-1)">−</button>
+        <input type="number" id="p2" value="4" min="0" max="30" oninput="clampInv(this)">
+        <button onclick="adj('p2',1)">+</button>
+      </div>
+    </div>
+    <div class="inv-item">
+      <div><div class="inv-label">1 lb plates</div><div class="inv-sublabel">Total count</div></div>
+      <div class="counter">
+        <button onclick="adj('p1',-1)">−</button>
+        <input type="number" id="p1" value="0" min="0" max="30" oninput="clampInv(this)">
+        <button onclick="adj('p1',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bar-row">
+    <div class="bar-row-left">
+      <div class="bar-row-label">Handle Weight</div>
+      <div class="bar-row-sub">Each dumbbell handle (default 1 lb)</div>
+    </div>
+    <div class="counter">
+      <button onclick="adj('bar',-0.5)">−</button>
+      <input type="number" id="bar" value="1" min="0" max="10" step="0.5" oninput="clampInv(this)">
+      <button onclick="adj('bar',0.5)">+</button>
+    </div>
+  </div>
+
+  <button class="btn-primary" onclick="goWorkout()">BUILD MY WORKOUT →</button>
+</div>
+
+<!-- ══════════════ WORKOUT SCREEN ══════════════ -->
+<div id="screen-workout" class="screen">
+  <div class="top-bar">
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;color:var(--accent);">
+        <span class="autosave-dot" id="autosave-dot"></span>Your Workout
+      </div>
+      <div style="font-size:0.78rem;color:var(--muted);">Weights save automatically as you adjust</div>
+    </div>
+    <button class="btn-secondary" onclick="goInv()">⚙ Plates</button>
+  </div>
+
+  <div id="inv-summary" class="inv-summary"></div>
+
+  <div class="section-label">💪 Arms</div>
+
+  <div class="exercise-card" data-id="curl" data-default="15" data-mode="each">
+    <div class="card-header" onclick="toggleCard(this.closest('.exercise-card'))">
+      <div class="exercise-icon">💪</div>
+      <div class="card-meta">
+        <div class="exercise-name">Dumbbell Curl</div>
+        <div class="exercise-sets">3 sets × 12 reps</div>
+      </div>
+      <div class="weight-badge">15 LBS</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="weight-picker">
+        <label>Target weight<br><span style="color:#555;font-size:0.7rem;">per dumbbell</span></label>
+        <div class="counter">
+          <button onclick="adjWeight(this,-1)">−</button>
+          <input type="number" class="target-input" value="15" min="1" max="50" oninput="onWeightInput(this)">
+          <button onclick="adjWeight(this,1)">+</button>
+        </div>
+        <span style="font-size:0.8rem;color:var(--muted);">lbs</span>
+      </div>
+      <div class="plate-result">
+        <div class="plate-result-label">Plate combo — each dumbbell</div>
+        <div class="plate-combo"></div>
+        <div class="total-row"></div>
+      </div>
+      <div class="tip"><span>Form:</span> Stand tall, elbows pinned to your sides. Curl up slowly, squeeze at the top, lower controlled. Don't swing your body.</div>
+      <a class="video-link" href="https://www.youtube.com/results?search_query=dumbbell+bicep+curl+form" target="_blank">▶ Watch on YouTube</a>
+    </div>
+  </div>
+
+  <div class="exercise-card" data-id="hammer" data-default="15" data-mode="each">
+    <div class="card-header" onclick="toggleCard(this.closest('.exercise-card'))">
+      <div class="exercise-icon">🔨</div>
+      <div class="card-meta">
+        <div class="exercise-name">Hammer Curl</div>
+        <div class="exercise-sets">3 sets × 12 reps</div>
+      </div>
+      <div class="weight-badge">15 LBS</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="weight-picker">
+        <label>Target weight<br><span style="color:#555;font-size:0.7rem;">per dumbbell</span></label>
+        <div class="counter">
+          <button onclick="adjWeight(this,-1)">−</button>
+          <input type="number" class="target-input" value="15" min="1" max="50" oninput="onWeightInput(this)">
+          <button onclick="adjWeight(this,1)">+</button>
+        </div>
+        <span style="font-size:0.8rem;color:var(--muted);">lbs</span>
+      </div>
+      <div class="plate-result">
+        <div class="plate-result-label">Plate combo — each dumbbell</div>
+        <div class="plate-combo"></div>
+        <div class="total-row"></div>
+      </div>
+      <div class="tip"><span>Form:</span> Same as a curl but palms face each other (like holding a hammer). Hits the forearm and outer bicep more.</div>
+      <a class="video-link" href="https://www.youtube.com/results?search_query=hammer+curl+dumbbell+form" target="_blank">▶ Watch on YouTube</a>
+    </div>
+  </div>
+
+  <div class="exercise-card" data-id="tricep" data-default="15" data-mode="single">
+    <div class="card-header" onclick="toggleCard(this.closest('.exercise-card'))">
+      <div class="exercise-icon">🔺</div>
+      <div class="card-meta">
+        <div class="exercise-name">Overhead Tricep Extension</div>
+        <div class="exercise-sets">3 sets × 12 reps — one dumbbell, both hands</div>
+      </div>
+      <div class="weight-badge">15 LBS</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="weight-picker">
+        <label>Target weight<br><span style="color:#555;font-size:0.7rem;">one dumbbell total</span></label>
+        <div class="counter">
+          <button onclick="adjWeight(this,-1)">−</button>
+          <input type="number" class="target-input" value="15" min="1" max="50" oninput="onWeightInput(this)">
+          <button onclick="adjWeight(this,1)">+</button>
+        </div>
+        <span style="font-size:0.8rem;color:var(--muted);">lbs</span>
+      </div>
+      <div class="plate-result">
+        <div class="plate-result-label">Plate combo — one dumbbell</div>
+        <div class="plate-combo"></div>
+        <div class="total-row"></div>
+      </div>
+      <div class="tip"><span>Form:</span> Hold one dumbbell with both hands overhead. Lower it behind your head by bending elbows, press back up. Keep elbows pointed forward, not flared.</div>
+      <a class="video-link" href="https://www.youtube.com/results?search_query=overhead+tricep+extension+dumbbell+form" target="_blank">▶ Watch on YouTube</a>
+    </div>
+  </div>
+
+  <div class="section-label">🏋️ Upper Chest</div>
+
+  <div class="exercise-card" data-id="floorpress" data-default="20" data-mode="each">
+    <div class="card-header" onclick="toggleCard(this.closest('.exercise-card'))">
+      <div class="exercise-icon">🛏️</div>
+      <div class="card-meta">
+        <div class="exercise-name">Dumbbell Floor Press</div>
+        <div class="exercise-sets">3 sets × 12 reps</div>
+      </div>
+      <div class="weight-badge">20 LBS</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="weight-picker">
+        <label>Target weight<br><span style="color:#555;font-size:0.7rem;">per dumbbell</span></label>
+        <div class="counter">
+          <button onclick="adjWeight(this,-1)">−</button>
+          <input type="number" class="target-input" value="20" min="1" max="50" oninput="onWeightInput(this)">
+          <button onclick="adjWeight(this,1)">+</button>
+        </div>
+        <span style="font-size:0.8rem;color:var(--muted);">lbs</span>
+      </div>
+      <div class="plate-result">
+        <div class="plate-result-label">Plate combo — each dumbbell</div>
+        <div class="plate-combo"></div>
+        <div class="total-row"></div>
+      </div>
+      <div class="tip"><span>Form:</span> Lie flat, knees bent, feet flat. Press dumbbells up over chest, lower until elbows touch the ground, press back up. Floor stops you from going too deep.</div>
+      <a class="video-link" href="https://www.youtube.com/results?search_query=dumbbell+floor+press+form+beginner" target="_blank">▶ Watch on YouTube</a>
+    </div>
+  </div>
+
+  <div class="exercise-card" data-id="pullover" data-default="15" data-mode="single">
+    <div class="card-header" onclick="toggleCard(this.closest('.exercise-card'))">
+      <div class="exercise-icon">🌊</div>
+      <div class="card-meta">
+        <div class="exercise-name">Dumbbell Pullover</div>
+        <div class="exercise-sets">3 sets × 10 reps — one dumbbell, both hands</div>
+      </div>
+      <div class="weight-badge">15 LBS</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="weight-picker">
+        <label>Target weight<br><span style="color:#555;font-size:0.7rem;">one dumbbell total</span></label>
+        <div class="counter">
+          <button onclick="adjWeight(this,-1)">−</button>
+          <input type="number" class="target-input" value="15" min="1" max="50" oninput="onWeightInput(this)">
+          <button onclick="adjWeight(this,1)">+</button>
+        </div>
+        <span style="font-size:0.8rem;color:var(--muted);">lbs</span>
+      </div>
+      <div class="plate-result">
+        <div class="plate-result-label">Plate combo — one dumbbell</div>
+        <div class="plate-combo"></div>
+        <div class="total-row"></div>
+      </div>
+      <div class="tip"><span>Form:</span> Lie on your mat, hold one dumbbell with both hands above chest. Lower it back over your head with straight arms, then pull back up. Slow and controlled.</div>
+      <a class="video-link" href="https://www.youtube.com/results?search_query=dumbbell+pullover+floor+form" target="_blank">▶ Watch on YouTube</a>
+    </div>
+  </div>
+
+  <div class="exercise-card" data-id="pushup" data-default="0" data-mode="bw">
+    <div class="card-header" onclick="toggleCard(this.closest('.exercise-card'))">
+      <div class="exercise-icon">⬇️</div>
+      <div class="card-meta">
+        <div class="exercise-name">Push-Ups</div>
+        <div class="exercise-sets">3 sets × max reps</div>
+      </div>
+      <div class="weight-badge">BW</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="tip"><span>Form:</span> Hands slightly wider than shoulders, body in a straight line. Lower chest to mat, press back up. Don't let hips sag. Leave 1-2 reps in the tank.</div>
+      <a class="video-link" href="https://www.youtube.com/results?search_query=proper+pushup+form+beginner" target="_blank">▶ Watch on YouTube</a>
+    </div>
+  </div>
+
+  <div class="section-label">🔥 Abs</div>
+
+  <div class="exercise-card" data-id="plank" data-default="0" data-mode="bw">
+    <div class="card-header" onclick="toggleCard(this.closest('.exercise-card'))">
+      <div class="exercise-icon">⏱️</div>
+      <div class="card-meta">
+        <div class="exercise-name">Plank</div>
+        <div class="exercise-sets">3 sets × 30-45 seconds</div>
+      </div>
+      <div class="weight-badge">BW</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="tip"><span>Form:</span> Forearms on mat, elbows under shoulders, straight line head to heels. Squeeze core and glutes. Don't let hips rise or sag. Breathe steadily.</div>
+      <a class="video-link" href="https://www.youtube.com/results?search_query=proper+plank+form+beginner" target="_blank">▶ Watch on YouTube</a>
+    </div>
+  </div>
+
+  <div class="exercise-card" data-id="russian" data-default="10" data-mode="single">
+    <div class="card-header" onclick="toggleCard(this.closest('.exercise-card'))">
+      <div class="exercise-icon">🌀</div>
+      <div class="card-meta">
+        <div class="exercise-name">Dumbbell Russian Twist</div>
+        <div class="exercise-sets">3 sets × 20 reps (10 each side)</div>
+      </div>
+      <div class="weight-badge">10 LBS</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="weight-picker">
+        <label>Target weight<br><span style="color:#555;font-size:0.7rem;">one dumbbell total</span></label>
+        <div class="counter">
+          <button onclick="adjWeight(this,-1)">−</button>
+          <input type="number" class="target-input" value="10" min="1" max="50" oninput="onWeightInput(this)">
+          <button onclick="adjWeight(this,1)">+</button>
+        </div>
+        <span style="font-size:0.8rem;color:var(--muted);">lbs</span>
+      </div>
+      <div class="plate-result">
+        <div class="plate-result-label">Plate combo — one dumbbell</div>
+        <div class="plate-combo"></div>
+        <div class="total-row"></div>
+      </div>
+      <div class="tip"><span>Form:</span> Sit on mat, lean back slightly, feet off ground or flat. Hold dumbbell with both hands, rotate side to side touching it to the floor each time. Keep core tight.</div>
+      <a class="video-link" href="https://www.youtube.com/results?search_query=russian+twist+dumbbell+form" target="_blank">▶ Watch on YouTube</a>
+    </div>
+  </div>
+
+  <div class="exercise-card" data-id="deadbug" data-default="0" data-mode="bw">
+    <div class="card-header" onclick="toggleCard(this.closest('.exercise-card'))">
+      <div class="exercise-icon">🪲</div>
+      <div class="card-meta">
+        <div class="exercise-name">Dead Bug</div>
+        <div class="exercise-sets">3 sets × 10 reps each side</div>
+      </div>
+      <div class="weight-badge">BW</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="tip"><span>Form:</span> Lie on back, arms straight up, knees bent 90° in the air. Slowly lower right arm and left leg toward the floor, return, switch sides. Press lower back into mat the whole time. Slow = effective.</div>
+      <a class="video-link" href="https://www.youtube.com/results?search_query=dead+bug+exercise+form+beginner" target="_blank">▶ Watch on YouTube</a>
+    </div>
+  </div>
+
+  <div class="rest-note">
+    <strong>Rest between sets:</strong> 60–90 seconds. Between exercises: up to 2 minutes.<br>
+    <strong>Rule:</strong> Last 2-3 reps should feel hard. If it's easy, bump the weight next session.
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  STORAGE
+// ─────────────────────────────────────────────
+const LS_INV     = 'wg_inventory';
+const LS_WEIGHTS = 'wg_weights';
+
+const INV_DEFAULTS = { p6: 4, p4: 2, p2: 4, p1: 0, bar: 1 };
+
+let inv = {};
+let weights = {};       // { [data-id]: number }
+let saveTimer = null;
+
+function loadAll() {
+  // Load inventory
+  try {
+    const raw = localStorage.getItem(LS_INV);
+    inv = raw ? { ...INV_DEFAULTS, ...JSON.parse(raw) } : { ...INV_DEFAULTS };
+  } catch { inv = { ...INV_DEFAULTS }; }
+
+  // Load per-exercise weights
+  try {
+    const raw = localStorage.getItem(LS_WEIGHTS);
+    weights = raw ? JSON.parse(raw) : {};
+  } catch { weights = {}; }
+}
+
+function saveAll() {
+  try { localStorage.setItem(LS_INV, JSON.stringify(inv)); } catch {}
+  try { localStorage.setItem(LS_WEIGHTS, JSON.stringify(weights)); } catch {}
+  flashSaveDot();
+}
+
+// Debounced save — waits 600ms after last change
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveAll, 600);
+}
+
+function flashSaveDot() {
+  const dot = document.getElementById('autosave-dot');
+  if (!dot) return;
+  dot.classList.add('flash');
+  setTimeout(() => dot.classList.remove('flash'), 1500);
+}
+
+// ─────────────────────────────────────────────
+//  INVENTORY SCREEN
+// ─────────────────────────────────────────────
+function populateInvFields() {
+  ['p6','p4','p2','p1','bar'].forEach(k => {
+    const el = document.getElementById(k);
+    if (el) el.value = inv[k];
+  });
+}
+
+function adj(id, delta) {
+  const el = document.getElementById(id);
+  let val = parseFloat(el.value) + delta;
+  if (val < 0) val = 0;
+  el.value = val;
+  inv[id] = val;
+}
+
+function clampInv(el) {
+  const v = parseFloat(el.value);
+  el.value = (isNaN(v) || v < 0) ? 0 : v;
+  inv[el.id] = parseFloat(el.value) || 0;
+}
+
+function goInv() {
+  document.getElementById('screen-workout').classList.remove('active');
+  document.getElementById('screen-inv').classList.add('active');
+  populateInvFields();
+}
+
+function goWorkout() {
+  ['p6','p4','p2','p1','bar'].forEach(k => {
+    inv[k] = parseFloat(document.getElementById(k).value) || 0;
+  });
+  saveAll();
+  document.getElementById('screen-inv').classList.remove('active');
+  document.getElementById('screen-workout').classList.add('active');
+  renderInvSummary();
+  recalcAll();
+}
+
+// ─────────────────────────────────────────────
+//  PLATE SOLVER
+// ─────────────────────────────────────────────
+function solvePlates(targetTotal, maxPlates) {
+  const bar = inv.bar;
+  const needed = targetTotal - bar;
+
+  if (needed <= 0) return { plates: [], total: bar, exact: true, shortfall: 0 };
+
+  const sizes = [6, 4, 2, 1];
+  const avail = { 6: maxPlates[6], 4: maxPlates[4], 2: maxPlates[2], 1: maxPlates[1] };
+
+  let remaining = needed;
+  const used = { 6: 0, 4: 0, 2: 0, 1: 0 };
+
+  for (const s of sizes) {
+    const canUse = Math.min(avail[s], Math.floor(remaining / s));
+    used[s] = canUse;
+    remaining -= canUse * s;
+  }
+
+  const plates = sizes.filter(s => used[s] > 0).map(s => ({ weight: s, count: used[s] }));
+  const total = targetTotal - remaining;
+  return { plates, total, exact: remaining === 0, shortfall: remaining };
+}
+
+// ─────────────────────────────────────────────
+//  RENDER
+// ─────────────────────────────────────────────
+function renderInvSummary() {
+  const s = document.getElementById('inv-summary');
+  s.innerHTML =
+    `<span style="color:var(--muted);font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;">Your plates:</span>` +
+    `<div class="inv-chip">6lb × <span>${inv.p6}</span></div>` +
+    `<div class="inv-chip">4lb × <span>${inv.p4}</span></div>` +
+    `<div class="inv-chip">2lb × <span>${inv.p2}</span></div>` +
+    `<div class="inv-chip">1lb × <span>${inv.p1}</span></div>` +
+    `<div class="inv-chip">Handle <span>${inv.bar}lb</span></div>`;
+}
+
+function renderPlateResult(card) {
+  const mode = card.dataset.mode;
+  if (mode === 'bw') return;
+
+  const input = card.querySelector('.target-input');
+  const target = parseFloat(input.value) || 1;
+  const comboEl = card.querySelector('.plate-combo');
+  const totalEl = card.querySelector('.total-row');
+
+  const divisor = (mode === 'each') ? 2 : 1;
+  const maxPlates = {
+    6: Math.floor(inv.p6 / divisor),
+    4: Math.floor(inv.p4 / divisor),
+    2: Math.floor(inv.p2 / divisor),
+    1: Math.floor(inv.p1 / divisor),
+  };
+
+  const result = solvePlates(target, maxPlates);
+
+  // Build plate tags
+  let html = `<div class="plate bar">${inv.bar}lb handle</div>`;
+  for (const p of result.plates) {
+    for (let i = 0; i < p.count; i++) {
+      html += `<div class="plus">+</div><div class="plate">${p.weight}lb</div>`;
+    }
+  }
+  comboEl.innerHTML = html;
+
+  // Total row
+  const suffix = (mode === 'each') ? 'per dumbbell' : 'total';
+  if (result.exact) {
+    totalEl.innerHTML = `= <strong style="color:var(--success)">${result.total} lbs</strong> ${suffix} ✓`;
+  } else {
+    totalEl.innerHTML = `= <strong>${result.total} lbs</strong> ${suffix} <span class="warn-text">(${result.shortfall}lb short — not enough plates)</span>`;
+  }
+
+  // Badge
+  const badge = card.querySelector('.weight-badge');
+  if (badge && badge.textContent !== 'BW') {
+    badge.textContent = result.exact ? `${result.total} LBS` : `~${result.total} LBS`;
+  }
+}
+
+function recalcAll() {
+  document.querySelectorAll('.exercise-card').forEach(renderPlateResult);
+}
+
+// ─────────────────────────────────────────────
+//  WEIGHT INPUT HANDLERS
+// ─────────────────────────────────────────────
+function onWeightInput(input) {
+  const card = input.closest('.exercise-card');
+  renderPlateResult(card);
+  // Save to weights map
+  if (card.dataset.id) {
+    weights[card.dataset.id] = parseFloat(input.value) || parseFloat(card.dataset.default) || 0;
+    scheduleSave();
+  }
+}
+
+function adjWeight(btn, delta) {
+  const card = btn.closest('.exercise-card');
+  const input = card.querySelector('.target-input');
+  let val = parseFloat(input.value) + delta;
+  val = Math.max(1, Math.min(50, val));
+  input.value = val;
+  onWeightInput(input);
+}
+
+// ─────────────────────────────────────────────
+//  CARD TOGGLE
+// ─────────────────────────────────────────────
+function toggleCard(card) {
+  const body = card.querySelector('.card-body');
+  const chevron = card.querySelector('.chevron');
+  const isOpen = body.classList.contains('open');
+
+  document.querySelectorAll('.card-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.chevron').forEach(c => c.style.transform = '');
+
+  if (!isOpen) {
+    body.classList.add('open');
+    if (chevron) chevron.style.transform = 'rotate(180deg)';
+    renderPlateResult(card);
+  }
+}
+
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
+(function init() {
+  loadAll();
+
+  // Restore per-exercise weights from storage, falling back to data-default
+  document.querySelectorAll('.exercise-card[data-id]').forEach(card => {
+    const id = card.dataset.id;
+    const input = card.querySelector('.target-input');
+    if (!input) return;
+    const saved = weights[id];
+    input.value = (saved !== undefined) ? saved : (card.dataset.default || 0);
+    // Sync badge
+    const badge = card.querySelector('.weight-badge');
+    if (badge && badge.textContent !== 'BW' && input.value > 0) {
+      badge.textContent = `${input.value} LBS`;
+    }
+  });
+
+  // If we have saved inventory, show the "saved from last time" badge and go straight to workout
+  const hasSaved = localStorage.getItem(LS_INV) !== null;
+  if (hasSaved) {
+    document.getElementById('inv-saved-badge').classList.add('show');
+    // Auto-skip to workout screen if inventory is already configured
+    populateInvFields();
+    document.getElementById('screen-inv').classList.remove('active');
+    document.getElementById('screen-workout').classList.add('active');
+    renderInvSummary();
+    recalcAll();
+  }
+})();
+</script>
+</body>
+</html>
